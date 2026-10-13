@@ -36,10 +36,12 @@ const {buildOptions,FOCUSES}=require('../core/build-options.cjs');
 const {planCombos,sanitizeDraft}=require('../core/combo-planner.cjs');
 const mechanics=require('../data/mechanics.json');
 const brand=require('../data/brand.json');
-// Keep the existing profile when the display name and executable change.
+const {importLegacyNightveil}=require('./profile-migration.cjs');
+// An explicit test profile remains isolated; regular installations use their
+// own Nightveil directory instead of the other Mayhem application's profile.
 const previousProfile=app.getPath('userData');
 app.setName(brand.name);
-app.setPath('userData',path.basename(previousProfile)===brand.name?path.join(app.getPath('appData'),'mayhem-companion'):previousProfile);
+app.setPath('userData',['dvm-nightveil',brand.name,'mayhem-companion'].includes(path.basename(previousProfile))?path.join(app.getPath('appData'),'dvm-nightveil'):previousProfile);
 let catalogStore,dataSnapshots=[],communityStatus='',buildCache=null,overlayUX={},tabHeld=false,settingsWrites=Promise.resolve();
 const rerolls=new RerollQueue();
 let rerollTimer,scanRevision=0,history=learning.newHistory(),historyStore,historySync,historyGame='',lastHistoryTime=-1,historyTierChampions=[];
@@ -58,7 +60,7 @@ const defaults={autoScan:true,overlayEnabled:true,cardTiersEnabled:true,overlayS
 defaults.display={...displayLayout.DEFAULT_DISPLAY};
 defaults.autoReroll=true;defaults.learnBuilds=true;defaults.useHistory=true;defaults.rerollRegions=REROLL_REGIONS;
 Object.assign(defaults,overlayLayout.sanitizeOverlay());
-defaults.buildFocus='auto';defaults.planner={champion:'Evelynn',ids:[]};
+defaults.buildFocus='auto';defaults.planner={champion:'',ids:[]};
 let settings={...defaults},snapshot=null,client=null,status='Đang kết nối',lastLive=0,lastGameTime=-1,matchId=null,epoch=0,owned=[],offered=[],enemyAugments={},scan={status:'Sẵn sàng',matches:[],enemyCandidates:[]},mode='live',message='',polling=false,updating=false,pendingCatalog=null,versionWarning='',hotkeyFailures=[],hotkeyListener='Đang khởi động';
 let autoScanState={gate:0,attempts:0,nextAt:0,complete:false};
 let monitorState={suspected:0,rescans:0,observing:false,allChanged:false};
@@ -122,7 +124,7 @@ function rosterChampions(){
  return [...new Set(ids.filter(id=>data.champions[id]))];
 }
 function getState({overlayOnly=false}={}){
- if(POLICY.liveAdvice!=='APPROVED')return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Chỉ đọc dữ liệu đã hiển thị · không quét lõi'},visibleSession:POLICY.visibleSession==='READ_ONLY'?visibleSession(snapshot,data):null,lastLive,stale:!!lastLive&&Date.now()-lastLive>4500,staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
+ if(POLICY.liveAdvice!=='APPROVED')return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Chỉ đọc dữ liệu đã hiển thị · không quét lõi'},visibleSession:POLICY.visibleSession==='READ_ONLY'?visibleSession(snapshot,data):null,lastLive,stale:!!lastLive&&Date.now()-lastLive>4500,staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,overlayDiagnostic:overlayDiagnostic(),dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
  const champ=currentChampion(), blank={activePlayer:{},allPlayers:[],gameData:{mapNumber:12}};
  const enemyThreats=snapshot?engine.threats(snapshot,data,enemyAugments):[];
  const historyRole=engine.inferRole(champ,data,snapshot,settings.role,owned);
@@ -163,6 +165,7 @@ function broadcast(){
  const compact={...state,build:state.build?{...state.build,graph:null,observations:[],alternatives:[],path:[],components:[],conflicts:[]}:null,catalog:null,history:null,historyItemNames:null,display:null,targetOptions:[],planner:null,buildPlans:null,dataHealth:null,assessment:state.assessment?{offers:state.assessment.offers,advice:state.assessment.advice,bestIds:state.assessment.bestIds}:null};
  if(sideVisible)publisher.send(overlay,compact);if(badgesVisible)publisher.send(badgeOverlay,compact);
 }
+function overlayDiagnostic(){return {enabled:settings.overlayEnabled,visible:!!overlay?.isVisible(),gameFocused,hasGame:!!snapshot||['InProgress','GameStart'].includes(client?.phase),helper:hotkeyListener};}
 function overlayVisibility(){return overlayLayout.visibility({enabled:settings.overlayEnabled,demo:mode==='demo',hasGame:!!snapshot||['InProgress','GameStart'].includes(client?.phase),focused:gameFocused&&runtime.state!=='SUSPENDED',tabHeld,choices:offered.some(Boolean)&&!!scan.scannedAt&&Date.now()-scan.scannedAt<90000,autoTab:settings.overlayAutoHideTab,autoChoices:settings.overlayAutoHideChoices});}
 function syncOverlay(){
  if(!overlay||overlay.isDestroyed())return;
@@ -552,7 +555,7 @@ async function startHotkeyHelper(){
   hotkeyHelper=spawn('powershell.exe',['-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',script,'-ParentProcessId',String(process.pid)],{windowsHide:true,stdio:['ignore','pipe','pipe']});
   let pending='';
   hotkeyHelper.stdout.setEncoding('utf8');
-  hotkeyHelper.stdout.on('data',chunk=>{pending+=chunk;let end;while((end=pending.indexOf('\n'))>=0){const line=pending.slice(0,end).trim();pending=pending.slice(end+1);if(line==='READY'){hotkeyListener='Sẵn sàng';broadcast();}else if(line==='GAME_BLUR'){gameFocused=false;runtime.dispatch('FOCUS',false);tabHeld=false;gameClientRect=null;gamePhysicalRect=null;gameOuterRect=null;broadcast();}else if(line.startsWith('GAME_RECT ')){const values=line.slice(10).split(' ').map(Number);if(values.length===4&&values.every(Number.isFinite)&&values[2]>200&&values[3]>200){gamePhysicalRect={x:values[0],y:values[1],width:values[2],height:values[3]};gameClientRect=screen.screenToDipRect(null,gamePhysicalRect);if(!gameFocused){runtime.dispatch('FOCUS',true);schedulePoll();clearTimeout(scanTimer);if(POLICY.liveOCR==='APPROVED')scanTimer=setTimeout(scanTick,0);}gameFocused=true;broadcast();}}else if(line.startsWith('GAME_WINDOW ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)gameOuterRect={x:v[0],y:v[1],width:v[2],height:v[3]};}else if(line.startsWith('CLIENT_RECT ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)leagueClientRect=screen.screenToDipRect(null,{x:v[0],y:v[1],width:v[2],height:v[3]});}else if(line.startsWith('GAME_CLICK ')){const values=line.slice(11).split(' ').map(Number);if(values.length===2&&values.every(Number.isFinite))handleGameClick(values[0],values[1]);}else if(line)handleHotkey(line);}});
+  hotkeyHelper.stdout.on('data',chunk=>{pending+=chunk;let end;while((end=pending.indexOf('\n'))>=0){const line=pending.slice(0,end).trim();pending=pending.slice(end+1);if(line==='READY'){hotkeyListener='Sẵn sàng';broadcast();}else if(line==='GAME_FOCUS'){if(!gameFocused){gameFocused=true;runtime.dispatch('FOCUS',true);schedulePoll();broadcast();}}else if(line==='GAME_BLUR'){gameFocused=false;runtime.dispatch('FOCUS',false);tabHeld=false;gameClientRect=null;gamePhysicalRect=null;gameOuterRect=null;broadcast();}else if(line.startsWith('GAME_RECT ')){const values=line.slice(10).split(' ').map(Number);if(values.length===4&&values.every(Number.isFinite)&&values[2]>200&&values[3]>200){gamePhysicalRect={x:values[0],y:values[1],width:values[2],height:values[3]};gameClientRect=screen.screenToDipRect(null,gamePhysicalRect);if(!gameFocused){runtime.dispatch('FOCUS',true);schedulePoll();clearTimeout(scanTimer);if(POLICY.liveOCR==='APPROVED')scanTimer=setTimeout(scanTick,0);}gameFocused=true;broadcast();}}else if(line.startsWith('GAME_WINDOW ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)gameOuterRect={x:v[0],y:v[1],width:v[2],height:v[3]};}else if(line.startsWith('CLIENT_RECT ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)leagueClientRect=screen.screenToDipRect(null,{x:v[0],y:v[1],width:v[2],height:v[3]});}else if(line.startsWith('GAME_CLICK ')){const values=line.slice(11).split(' ').map(Number);if(values.length===2&&values.every(Number.isFinite))handleGameClick(values[0],values[1]);}else if(line)handleHotkey(line);}});
   hotkeyHelper.stderr.setEncoding('utf8');
   hotkeyHelper.stderr.on('data',chunk=>{hotkeyListener='Lỗi bộ nghe phím: '+chunk.trim().slice(0,120);broadcast();});
   hotkeyHelper.on('error',()=>{hotkeyListener='Không khởi động được';broadcast();});
@@ -561,6 +564,7 @@ async function startHotkeyHelper(){
 }
 async function boot(){
  userDir=app.getPath('userData');await fs.mkdir(userDir,{recursive:true});
+ if(path.basename(userDir)==='dvm-nightveil')await importLegacyNightveil(path.join(app.getPath('appData'),'mayhem-companion'),userDir);
  diagnostics=new releaseRuntime.Diagnostics(path.join(userDir,'crash-diagnostics'),appVersion);
  const recoveryMode=await diagnostics.start();
  settings=await releaseRuntime.loadSettings(userDir,defaults);

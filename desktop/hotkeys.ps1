@@ -9,6 +9,7 @@ public static class MayhemKeys {
   [StructLayout(LayoutKind.Sequential)] public struct Point { public int X, Y; }
   [DllImport("user32.dll")] public static extern short GetAsyncKeyState(int key);
   [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
   [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern int GetWindowText(IntPtr window, StringBuilder text, int size);
   [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr window, out Rect rect);
   [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr window, ref Point point);
@@ -43,6 +44,10 @@ $tabSince = 0L
 $tabSent = $false
 $tabHeld = $false
 $parentTick = 0
+$lastForegroundWindow = [IntPtr]::Zero
+$lastForegroundGame = $false
+$foregroundTick = 0
+$wasInGame = $false
 [Console]::WriteLine('READY')
 while ($true) {
   $parentTick++
@@ -53,7 +58,23 @@ while ($true) {
   $null = $title.Clear()
   $window = [MayhemKeys]::GetForegroundWindow()
   $null = [MayhemKeys]::GetWindowText($window, $title, $title.Capacity)
-  $inGame = $title.ToString() -eq 'League of Legends (TM) Client'
+  $foregroundTick++
+  if ($window -ne $lastForegroundWindow -or $foregroundTick -ge 18) {
+    $foregroundTick = 0
+    $lastForegroundWindow = $window
+    $lastForegroundGame = $false
+    try {
+      $foregroundPid = [uint32]0
+      $null = [MayhemKeys]::GetWindowThreadProcessId($window, [ref]$foregroundPid)
+      if ($foregroundPid -gt 0) {
+        $lastForegroundGame = [System.Diagnostics.Process]::GetProcessById([int]$foregroundPid).ProcessName -like 'League of Legends*'
+      }
+    } catch { }
+  }
+  $inGame = $lastForegroundGame -or $title.ToString() -eq 'League of Legends (TM) Client'
+  if ($inGame -and -not $wasInGame) { [Console]::WriteLine('GAME_FOCUS') }
+  if (-not $inGame -and $wasInGame) { [Console]::WriteLine('GAME_BLUR') }
+  $wasInGame = $inGame
   if ($title.ToString() -eq 'League of Legends') {
     $clientBox = [MayhemKeys+Rect]::new()
     $clientPoint = [MayhemKeys+Point]::new()
@@ -83,7 +104,6 @@ while ($true) {
     }
     }
   } elseif ($lastGameRect) {
-    [Console]::WriteLine('GAME_BLUR')
     $lastGameRect = ''
     $geometryTick = 0
   }

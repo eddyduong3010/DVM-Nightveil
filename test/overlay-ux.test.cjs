@@ -22,6 +22,7 @@ test('manual zoom and vertical offsets remain within safe bounds even at 200 per
 });
 test('Tab and choice auto-hide preserve manual visibility and return to the configured state',()=>{
  const game={hasGame:true,focused:true};assert.equal(o.visibility(game).panel,true);
+ assert.equal(o.visibility({focused:true,hasGame:false}).panel,true);
  assert.deepEqual(o.visibility({...game,tabHeld:true}),{panel:false,badges:false,controls:false});
  assert.equal(o.visibility({...game,enabled:false,tabHeld:false}).panel,false);
  assert.deepEqual(o.visibility({...game,choices:true}),{panel:false,badges:true,controls:true});

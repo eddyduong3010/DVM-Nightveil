@@ -1,6 +1,6 @@
 {
-  "name": "mayhem-companion",
-  "version": "0.8.1",
+  "name": "dvm-nightveil",
+  "version": "0.8.2",
   "private": true,
   "description": "DVM Nightveil â€” ARAM Mayhem Companion cá»§a DÆ°Æ¡ng VÄƒn Minh",
   "author": "DÆ°Æ¡ng VÄƒn Minh",
@@ -36,7 +36,7 @@
     "vite": "8.3.4"
   },
   "build": {
-    "appId": "local.mayhem.companion",
+    "appId": "vn.dvm.nightveil",
     "productName": "DVM Nightveil",
     "copyright": "Copyright Â© 2026 DVM (DÆ°Æ¡ng VÄƒn Minh). All rights reserved.",
     "directories": {

@@ -5,7 +5,9 @@ function sanitizeOverlay(input={}){
 }
 function nextMode(mode){return MODES[(MODES.indexOf(mode)+1)%MODES.length];}
 function visibility({enabled=true,demo=false,hasGame=false,focused=false,tabHeld=false,choices=false,autoTab=true,autoChoices=true}={}){
- const active=demo||(hasGame&&focused),tab=active&&tabHeld&&autoTab;
+ // The game window itself is enough to show the pinned reference panel. The
+ // client and live endpoints can lag behind launch or be temporarily offline.
+ const active=demo||focused,tab=active&&tabHeld&&autoTab;
  return {panel:active&&enabled&&!tab&&!(choices&&autoChoices&&!demo),badges:active&&enabled&&!tab&&choices,controls:active&&!tab};
 }
 function layout(area,display={},options={}){

@@ -1,5 +1,5 @@
 const LABELS={god:'Cực mạnh · cộng đồng',strong:'Mạnh · cộng đồng',blackTech:'Tương tác đặc biệt',entertainment:'Giải trí',trap:'Bẫy · cần tránh',bug:'Tương tác có lỗi game'};
-function sanitizeDraft(raw={},data){return {champion:data.champions[raw.champion]?raw.champion:'Evelynn',ids:[...new Set((Array.isArray(raw.ids)?raw.ids:[]).filter(id=>data.augments.some(a=>a.id===id)))].slice(0,6)};}
+function sanitizeDraft(raw={},data){return {champion:data.champions[raw.champion]?raw.champion:Object.keys(data.champions).sort()[0]||'',ids:[...new Set((Array.isArray(raw.ids)?raw.ids:[]).filter(id=>data.augments.some(a=>a.id===id)))].slice(0,6)};}
 function planCombos(data,community,draft){
  const clean=sanitizeDraft(draft,data),selected=new Set(clean.ids),byId=new Map(data.augments.map(a=>[a.id,a]));
  const combos=(community?.patch===data.patch?community.combos||[]:[]).filter(c=>c.champion===clean.champion).map(c=>{

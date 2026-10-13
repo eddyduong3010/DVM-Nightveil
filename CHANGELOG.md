@@ -1,3 +1,11 @@
+# 0.8.2 — Overlay and shared-user profile fix — 2026-10-14
+
+- Show the pinned overlay as soon as the League game window gains focus, even if the match API has not responded; recognize the game process as well as its window title.
+- Start a new build with a champion prompt, fill it from the current match when available, and keep Evelynn only in the explicit demo.
+- Give Nightveil its own application ID and profile directory. Copy a recognized clean legacy Nightveil profile once without changing the original.
+- Add a visible overlay status and show/hide control. Verified the focus path in Electron and the packaged overlay in an isolated profile; real in-game positioning still requires a match check.
+- Installer remains unsigned; automatic binary updates remain disabled.
+
 # 0.8.1 — Read-only match view — 2026-10-14
 
 - Read locally available Game Client champion and item data while a match is active; show it in the main window and overlay without changing pinned build choices.

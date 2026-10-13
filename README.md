@@ -1,8 +1,8 @@
-# DVM Nightveil 0.8.1
+# DVM Nightveil 0.8.2
 
 Created by **Dương Văn Minh**. **Design by DVM in VietNam.**
 
-Bản Advanced Preview cho Windows 11: Build Lab 20 hướng chơi, tối đa 4 nhánh, mô phỏng theo giả định, thư viện SQLite có phiên bản, ảnh hưởng patch, tra cứu, luyện tập và tham khảo overlay tĩnh. Giữ cùng profile 0.7, backup trước migration schema3.
+Bản Advanced Preview cho Windows 11: Build Lab 20 hướng chơi, tối đa 4 nhánh, mô phỏng theo giả định, thư viện SQLite có phiên bản, ảnh hưởng patch, tra cứu, luyện tập và tham khảo overlay tĩnh. Nightveil dùng hồ sơ riêng `%APPDATA%\dvm-nightveil`; nếu tìm thấy hồ sơ Nightveil cũ hợp lệ thì sao chép dữ liệu sang một lần, giữ nguyên bản cũ.
 
 **Chưa phải Pro Edition hoàn tất hoặc bản Riot phê duyệt.** Ứng dụng tự đọc tướng và trang bị qua Game Client ở chế độ chỉ quan sát; build ghim trên overlay vẫn là tham khảo tĩnh. Simulator chưa bao phủ mọi kỹ năng/nội tại/lõi; kết quả ghi APPROXIMATE. Không công bố win rate lõi. Quét lõi trực tiếp, tier trên thẻ và lời khuyên quyết định trong trận vẫn tắt. Installer preview chưa ký số; auto-update ký số chưa hoạt động.
 
@@ -10,7 +10,7 @@ Bản Advanced Preview cho Windows 11: Build Lab 20 hướng chơi, tối đa 4 
 
 Xem [hướng dẫn tiếng Việt](docs/USER-GUIDE-VI.md), [phạm vi đã làm và còn thiếu](docs/IMPLEMENTATION-STATUS.md), [báo cáo kiểm thử](docs/TEST-REPORT.md) và [hiệu năng](docs/PERFORMANCE-REPORT.md).
 
-Ctrl+K tra cứu; Ctrl+Shift+O ẩn/hiện overlay; Ctrl+Shift+Space đổi chế độ; Ctrl+Shift+I click-through. Ghim build trước trận. F8 không quét trong bản này.
+Ctrl+K tra cứu; Ctrl+Shift+O ẩn/hiện overlay; Ctrl+Shift+Space đổi chế độ; Ctrl+Shift+I click-through. Ghim build trước trận. Overlay hiện khi cửa sổ game được chọn, kể cả khi API trận chưa sẵn sàng. Trong Thiết lập có trạng thái nhận diện cửa sổ game và nút ẩn/hiện. Evelynn chỉ là ví dụ ở nút “Xem thử”; build mới yêu cầu chọn tướng hoặc tự nhận tướng trong trận. F8 không quét trong bản này.
 
 ## Phát triển
 
