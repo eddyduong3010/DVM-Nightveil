@@ -32,5 +32,5 @@ test('stale client InProgress cannot install',()=>assert.equal(canInstall({phase
 test('idle state permits installation',()=>assert.equal(canInstall({phase:'CLIENT',clientPhase:'Lobby'}),true));
 test('signed release rejects missing credentials',()=>assert.throws(()=>configuration({RELEASE_SIGNED:'true'})));
 test('public update feed cannot be unsigned',()=>assert.throws(()=>configuration({PUBLIC_UPDATE_FEED:'true'})));
-test('private preview disables updater and signing claim',()=>{const c=configuration({});assert.equal(c.metadata.updatesEnabled,false);assert.equal(c.builder.forceCodeSigning,false);});
+test('unsigned preview disables updater and signing claim',()=>{const c=configuration({});assert.equal(c.metadata.updatesEnabled,false);assert.equal(c.builder.forceCodeSigning,false);assert.equal(c.metadata.repository,'eddyduong3010/DVM-Nightveil');});
 test('signed public build binds publisher and repository',()=>{const c=configuration({RELEASE_SIGNED:'true',PUBLIC_UPDATE_FEED:'true',WINDOWS_PUBLISHER:'DVM',CSC_LINK:'fixture',CSC_KEY_PASSWORD:'fixture'});assert.equal(c.builder.forceCodeSigning,true);assert.equal(c.builder.win.publisherName,'DVM');assert.equal(c.builder.win.verifyUpdateCodeSignature,true);assert.ok(c.metadata.updatesEnabled);});
