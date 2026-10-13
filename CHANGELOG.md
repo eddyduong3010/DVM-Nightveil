@@ -1,3 +1,11 @@
+# 0.8.3 — Rich overlay and visible-card scan — 2026-10-14
+
+- Restore the compact match overlay with next item, three offered augments, tier provenance, enemy item context and estimated threat, plus labels above the three visible cards.
+- Re-enable bounded OCR of the player's visible augment cards and F8; watch visible rerolls without moving or clicking the mouse.
+- Fetch OP.GG tier labels for the current champion only when the source patch matches; show editorial estimates or unknown tier otherwise. No augment win rates.
+- Preserve match observation and build choices; never infer hidden enemy augments.
+- Verified OCR against a real 2560 × 1440 augment screenshot (three of three recognized), Electron hotkey/state flow, compact overlay and card-label screenshots. Real-match release still needs user testing.
+
 # 0.8.2 — Overlay and shared-user profile fix — 2026-10-14
 
 - Show the pinned overlay as soon as the League game window gains focus, even if the match API has not responded; recognize the game process as well as its window title.

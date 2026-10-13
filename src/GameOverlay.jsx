@@ -1,8 +1,12 @@
 import React from 'react';
 const money=n=>new Intl.NumberFormat('vi-VN').format(Math.round(n||0));
 const focusNames={auto:'Cân bằng',damage:'Sát thương',survival:'Sống sót',augment:'Theo lõi',antitank:'Phá tank',sustain:'Hồi phục',utility:'Hỗ trợ',experimental:'Thử nghiệm'};
-function Pic({src,name,size=26}){return <img src={src} alt={name||''} width={size} height={size} onError={e=>e.currentTarget.style.visibility='hidden'}/>;}
+function Pic({src,name,size=26}){const [failed,setFailed]=React.useState(!src);React.useEffect(()=>setFailed(!src),[src]);return failed?<span className="nv-icon-fallback" style={{width:size,height:size}} aria-label={name||'Chưa có icon'}>{(name||'?').slice(0,1)}</span>:<img src={src} alt={name||''} width={size} height={size} onError={()=>setFailed(true)}/>;}
 function Grade({a}){return <b className={'tier tier-'+(a?.tier||'?')} aria-label={'Tier '+(a?.tier||'chưa rõ')}>{a?.tier||'?'}</b>;}
+export function OverlayBadges({state:s}){
+ const offers=s.assessment?.offers||[],centers=s.badgeCenters||[];
+ return <div className="nv-card-badges" aria-label="Tier lõi đang hiện">{[0,1,2].map(i=>{const a=offers[i];return a&&Number.isFinite(centers[i])?<div className="nv-card-badge" key={i} style={{left:centers[i]-90}}><span>THẺ {i+1}<b>{a.name}</b></span><Grade a={a}/><small>{a.sourceTier?'OP.GG · '+s.augmentReference?.patch:'Ước tính'}</small></div>:null;})}</div>;
+}
 export function OverlayControls({state,cmd}){
  const mode=state.overlayUX?.mode||state.settings.overlayMode||'compact';
  return <div className="overlay-controls nv-controls" aria-label="Điều khiển overlay">

@@ -42,7 +42,7 @@ test('37 links reject file/js/http',()=>{for(const url of ['file:///C:/secret','
 test('38 source freshness distinguishes unavailable and stale',()=>{assert.equal(ev.freshness({available:false}),'UNAVAILABLE');assert.equal(ev.freshness({patch:'p',currentPatch:'p',checkedAt:'2000-01-01'}),'STALE');});
 test('39 item recipe retains duplicate components',()=>assert.equal(lab.itemGraph(data,'3089').components.length,2));
 test('40 item recipe cycle bounded',()=>assert.equal(lab.itemGraph({items:{x:{id:'x',from:['x']}}},'x').components[0].error,'CYCLE'));
-test('41 locked live commands blocked regardless of UI',()=>{const p=require('../core/feature-policy.cjs');assert.throws(()=>p.assertCommand('scan'));assert.throws(()=>p.assertCommand('scan-enemy'));assert.doesNotThrow(()=>p.assertCommand('overlay-toggle'));});
+test('41 visible self scan is enabled; unavailable enemy augments remain blocked',()=>{const p=require('../core/feature-policy.cjs');assert.doesNotThrow(()=>p.assertCommand('scan'));assert.throws(()=>p.assertCommand('scan-enemy'));assert.doesNotThrow(()=>p.assertCommand('overlay-toggle'));});
 test('42 health and shields improve model EHP',()=>assert.ok(sim.simulate({selfHP:2000,selfArmor:100,effects:[{type:'shield',base:100}]}).physicalEHP===4200));
 test('43 stacks bounded by declared maximum',()=>assert.equal(sim.simulate({effects:[{type:'true',base:10,stacks:99,maxStacks:2}]}).total,20));
 test('44 magic coefficient explicitly user supplied',()=>assert.equal(sim.simulate({ap:100,mr:0,effects:[{type:'magic',base:50,apRatio:.5}]}).total,100));

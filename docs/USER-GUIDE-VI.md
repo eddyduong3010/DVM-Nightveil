@@ -5,7 +5,7 @@
 3. Mở Build & combo. Chọn tướng, hướng chơi; tìm lõi/món và thêm từ thẻ chi tiết. Khóa món đang giữ hoặc cấm món không muốn. Các lý do là editorial, không phải tier chính thức.
 4. Thêm tối đa 4 nhánh. Mở Mô phỏng, nhập dummy, hit rate/uptime và hiệu ứng bạn có nguồn. App KHÔNG tự tính nội tại/kỹ năng/lõi chưa được mô hình hóa. Kết quả luôn lý thuyết.
 5. So sánh xem khác biệt item/lõi và damage/EHP. Lưu build, ghi chú/tags, mô phỏng; mở lại tại Build của bạn. Workspace tự lưu sau 700ms ngừng chỉnh.
-6. Ghim overlay trước trận. Trong trận chỉ hiển thị bản tham khảo tĩnh, không đọc đối thủ hoặc khuyên lựa chọn thích ứng. Không dùng F8/F9 để quét.
+6. Trong trận, overlay hiện món tiếp theo, ba lõi đọc được và tier có ghi nguồn. F8 quét lại ba thẻ đang hiện; tự quét và đọc lại sau khi xoay có thể bật/tắt ở Thiết lập. Không dùng F9 vì đó là phím của game. Lõi đối thủ không hiện trong Tab/API thì app không thể biết chắc.
 7. Ctrl+K tra cứu. Nguồn & bằng chứng hiển thị giấy phép, patch, lần kiểm tra; có thể tắt mạng tại Thiết lập → Chỉ dùng cache.
 8. Cộng đồng: đồng bộ metadata có giấy phép, xem link gốc và thử combo ngoài trận. Nhãn cộng đồng chưa chắc được xác minh. Luyện tập tạo 3 thẻ, ghi lý do và lưu buổi học.
 9. Xuất báo cáo HTML từ build, ảnh màn hình kết quả PNG, thư viện JSON. JSON import hiện chỉ nhập build; backup SQLite dùng cho phục hồi toàn bộ.

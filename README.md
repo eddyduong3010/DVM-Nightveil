@@ -1,16 +1,16 @@
-# DVM Nightveil 0.8.2
+# DVM Nightveil 0.8.3
 
 Created by **Dương Văn Minh**. **Design by DVM in VietNam.**
 
 Bản Advanced Preview cho Windows 11: Build Lab 20 hướng chơi, tối đa 4 nhánh, mô phỏng theo giả định, thư viện SQLite có phiên bản, ảnh hưởng patch, tra cứu, luyện tập và tham khảo overlay tĩnh. Nightveil dùng hồ sơ riêng `%APPDATA%\dvm-nightveil`; nếu tìm thấy hồ sơ Nightveil cũ hợp lệ thì sao chép dữ liệu sang một lần, giữ nguyên bản cũ.
 
-**Chưa phải Pro Edition hoàn tất hoặc bản Riot phê duyệt.** Ứng dụng tự đọc tướng và trang bị qua Game Client ở chế độ chỉ quan sát; build ghim trên overlay vẫn là tham khảo tĩnh. Simulator chưa bao phủ mọi kỹ năng/nội tại/lõi; kết quả ghi APPROXIMATE. Không công bố win rate lõi. Quét lõi trực tiếp, tier trên thẻ và lời khuyên quyết định trong trận vẫn tắt. Installer preview chưa ký số; auto-update ký số chưa hoạt động.
+**Chưa phải bản Riot phê duyệt.** Overlay thử nghiệm đọc ba lõi đang hiển thị trên màn hình của chính người chơi, tướng/trang bị từ Game Client, và đưa ra tham khảo. Tier OP.GG chỉ hiện khi nguồn cùng patch trả về; nếu không, tier quy tắc DVM ghi “Ước tính” hoặc “?”. Không công bố win rate lõi. Không đọc được lõi đối thủ bị ẩn trong Tab/API và không giả lập dữ liệu đó. Simulator chưa bao phủ mọi kỹ năng/nội tại/lõi; kết quả ghi APPROXIMATE. Installer preview chưa ký số; auto-update ký số chưa hoạt động.
 
 ## Dùng thử
 
 Xem [hướng dẫn tiếng Việt](docs/USER-GUIDE-VI.md), [phạm vi đã làm và còn thiếu](docs/IMPLEMENTATION-STATUS.md), [báo cáo kiểm thử](docs/TEST-REPORT.md) và [hiệu năng](docs/PERFORMANCE-REPORT.md).
 
-Ctrl+K tra cứu; Ctrl+Shift+O ẩn/hiện overlay; Ctrl+Shift+Space đổi chế độ; Ctrl+Shift+I click-through. Ghim build trước trận. Overlay hiện khi cửa sổ game được chọn, kể cả khi API trận chưa sẵn sàng. Trong Thiết lập có trạng thái nhận diện cửa sổ game và nút ẩn/hiện. Evelynn chỉ là ví dụ ở nút “Xem thử”; build mới yêu cầu chọn tướng hoặc tự nhận tướng trong trận. F8 không quét trong bản này.
+Ctrl+K tra cứu; F8 quét lại ba lõi đang hiện; Ctrl+Shift+O ẩn/hiện overlay; Ctrl+Shift+Space đổi chế độ; Ctrl+Shift+I click-through. Mặc định tự quét có giới hạn khi tới lượt lõi và đọc lại sau khi nhấp xoay thẻ. Trong Thiết lập có trạng thái, nút quét và các tùy chọn bật/tắt. Evelynn chỉ là ví dụ ở nút “Xem thử”; build mới yêu cầu chọn tướng hoặc tự nhận tướng trong trận.
 
 ## Phát triển
 

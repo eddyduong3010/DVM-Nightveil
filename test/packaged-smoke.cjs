@@ -17,7 +17,7 @@ async function connect(url){
  const output=path.resolve(__dirname,'../../../outputs/advanced-validation'),profile=path.join(output,'packaged-profile-'+Date.now());await fs.mkdir(profile,{recursive:true});
  const h=require('../core/build-history.cjs'),raw=h.newHistory(),catalog=require('../data/catalog.json'),fixture=require('../core/demo.cjs').demo(catalog);fixture.gameData.gameMode='KIWI';h.observeHistory(raw,fixture,catalog,{game:'packaged-fixture'});
  const b={name:'Packaged Evelynn',champion:'Evelynn',items:['3089'],augments:['ARAM_WitchfulThinking'],archetype:'ap-burst',patch:catalog.patch};
- await fs.writeFile(path.join(profile,'build-history.json'),JSON.stringify(raw));await fs.writeFile(path.join(profile,'settings.json'),JSON.stringify({autoScan:false,autoScanVersion:1,inputSafetyVersion:2,learnBuilds:false,localOnly:true,displaySetupVersion:1,display:{showOnStartup:false},staticReference:b}));
+ await fs.writeFile(path.join(profile,'build-history.json'),JSON.stringify(raw));await fs.writeFile(path.join(profile,'settings.json'),JSON.stringify({autoScan:false,autoReroll:false,cardTiersEnabled:false,liveFeatureVersion:1,autoScanVersion:1,inputSafetyVersion:2,learnBuilds:false,localOnly:true,displaySetupVersion:1,display:{showOnStartup:false},staticReference:b}));
  const server=net.createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));const port=server.address().port;await new Promise(r=>server.close(r));
  const child=spawn(exe,['--user-data-dir='+profile,'--remote-debugging-port='+port,'--remote-debugging-address=127.0.0.1','--background'],{windowsHide:true,stdio:['ignore','ignore','pipe']});let stderr='';child.stderr.on('data',b=>stderr+=b.toString());
  let main,overlay;const deadline=setTimeout(()=>{child.kill();},60000);
@@ -36,8 +36,11 @@ async function connect(url){
   const saved=await adv('save-build',b);assert.ok(saved.id);const loaded=await adv('load');assert.equal(loaded.local.builds.length,1);
   const simulation=await adv('simulate',{builds:[b],scenario:{duration:5},level:18});assert.ok(simulation[0].result.total>0);
   await cmd('demo',true);await cmd('main');
-  overlay=await connect(targets.find(t=>t.url.includes('overlay=1')).webSocketDebuggerUrl);const o=await overlay.evaluate('window.mayhem.getState()');assert.equal(o.staticReference.name,b.name);assert.equal(o.policy.liveAdvice,'DISABLED_UNTIL_APPROVED');assert.equal((await state()).overlayDiagnostic.visible,true);
-  await assert.rejects(cmd('scan'),/DISABLED/);
+  overlay=await connect(targets.find(t=>t.url.includes('overlay=1')).webSocketDebuggerUrl);const o=await overlay.evaluate('window.mayhem.getState()');assert.equal(o.staticReference.name,b.name);assert.equal(o.champion.id,'Evelynn');assert.ok(o.assessment.offers.some(Boolean));assert.ok(o.build?.selected||o.build);assert.equal((await state()).overlayDiagnostic.visible,true);
+  await until(()=>overlay.evaluate("document.querySelectorAll('.nv-offer').length===3"));
+  assert.notEqual(await overlay.evaluate("document.querySelector('.nv-purchase strong')?.innerText"),'Chờ trang bị');
+  const overlayShot=await overlay.send('Page.captureScreenshot',{captureBeyondViewport:true});await fs.writeFile(path.join(output,'packaged-overlay-compact.png'),Buffer.from(overlayShot.data,'base64'));
+  await cmd('scan');assert.match((await state()).message,/minh họa/);
   await cmd('history-backup');assert.ok((await fs.readdir(path.join(profile,'history-backups'))).some(n=>n.startsWith('manual-')));
   await main.evaluate("document.querySelectorAll('.dv-side nav button')[13].click()");await wait(300);
   assert.match(await main.evaluate('document.body.innerText'),/Design by DVM in VietNam/);
@@ -46,7 +49,7 @@ async function connect(url){
   await main.evaluate("{const select=document.querySelector('select[aria-label=\"Tướng lập build\"]');select.value='Lux';select.dispatchEvent(new Event('change',{bubbles:true}));}");
   await main.evaluate("document.querySelectorAll('.dv-side nav button')[5].click()");await wait(500);
   assert.match(await main.evaluate('document.body.innerText'),/APPROXIMATE/);
-  const result={passed:true,version:s.appVersion,isolatedProfile:true,legacyRows:raw.records.length,sqliteMigration:true,workerBackup:true,buildSaved:true,simulationWorker:true,staticOverlay:true,liveScanRejected:true,branding:true,network:'local-only setting',installerWizard:'NOT_TESTED'};
+  const result={passed:true,version:s.appVersion,isolatedProfile:true,legacyRows:raw.records.length,sqliteMigration:true,workerBackup:true,buildSaved:true,simulationWorker:true,augmentedOverlay:true,demoScanNoCapture:true,branding:true,network:'local-only setting',installerWizard:'NOT_TESTED'};
   await fs.writeFile(path.join(output,'packaged-smoke.json'),JSON.stringify(result,null,2));console.log(result);
 
  }finally{

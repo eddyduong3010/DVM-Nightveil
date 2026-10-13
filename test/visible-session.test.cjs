@@ -18,6 +18,6 @@ test('passive session exposes champion and item names without hidden match field
 test('passive session disappears when no live snapshot exists',()=>{
  assert.equal(visibleSession(null,catalog),null);
  assert.equal(POLICY.visibleSession,'READ_ONLY');
- assert.throws(()=>assertCommand('scan'));
+ assert.doesNotThrow(()=>assertCommand('scan'));
  assert.throws(()=>assertCommand('scan-enemy'));
 });

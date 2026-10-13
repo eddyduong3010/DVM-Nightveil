@@ -3,6 +3,8 @@ const fs=require('node:fs/promises');
 const path=require('node:path');
 const {spawn}=require('node:child_process');
 const {POLICY,assertCommand}=require('../core/feature-policy.cjs');
+const liveAdviceEnabled=POLICY.liveAdvice==='LOCAL_EXPERIMENTAL'||POLICY.liveAdvice==='APPROVED';
+const ownOcrEnabled=POLICY.liveOCR==='VISIBLE_SELF_ONLY'||POLICY.liveOCR==='APPROVED';
 const {visibleSession}=require('../core/visible-session.cjs');
 const {AdvancedService}=require('./advanced-service.cjs');
 let advanced;
@@ -124,7 +126,7 @@ function rosterChampions(){
  return [...new Set(ids.filter(id=>data.champions[id]))];
 }
 function getState({overlayOnly=false}={}){
- if(POLICY.liveAdvice!=='APPROVED')return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Chỉ đọc dữ liệu đã hiển thị · không quét lõi'},visibleSession:POLICY.visibleSession==='READ_ONLY'?visibleSession(snapshot,data):null,lastLive,stale:!!lastLive&&Date.now()-lastLive>4500,staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,overlayDiagnostic:overlayDiagnostic(),dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
+ if(!liveAdviceEnabled)return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Chỉ đọc dữ liệu đã hiển thị · không quét lõi'},visibleSession:POLICY.visibleSession==='READ_ONLY'?visibleSession(snapshot,data):null,lastLive,stale:!!lastLive&&Date.now()-lastLive>4500,staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,overlayDiagnostic:overlayDiagnostic(),dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
  const champ=currentChampion(), blank={activePlayer:{},allPlayers:[],gameData:{mapNumber:12}};
  const enemyThreats=snapshot?engine.threats(snapshot,data,enemyAugments):[];
  const historyRole=engine.inferRole(champ,data,snapshot,settings.role,owned);
@@ -145,7 +147,7 @@ function getState({overlayOnly=false}={}){
  const communityCombos=community?.patch===data.patch?community.combos.filter(c=>c.champion===champ).map(c=>({...c,items:c.ids.map(id=>({id,name:data.augments.find(a=>a.id===id)?.name,owned:owned.includes(id)})),matched:c.ids.filter(id=>owned.includes(id)).length})).sort((a,b)=>b.matched-a.matched).slice(0,8):[];
  const buildKey=JSON.stringify([data.patch,data.version,data.fetchedAt,community?.releaseId,community?.fetchedAt,mode,epoch,champ,Math.floor((snapshot?.gameData?.gameTime||0)/30),snapshot?.activePlayer?.currentGold,snapshot?.allPlayers?.map(p=>[engine.playerKey(p),p.championName,p.team,p.level,p.isDead,p.items,p.scores]),owned,settings.role,settings.buildFocus,settings.useHistory,targetItem,enemyAugments,referenceCache.get(champ)?.fetchedAt,history.savedAt]);
  if(!buildCache||buildCache.key!==buildKey)buildCache={key:buildKey,value:champ?buildOptions(snapshot||blank,data,champ,owned,settings.role,enemyAugments,referenceCache.get(champ),{targetItem,community,threats:enemyThreats,historyAdvice:settings.useHistory?learned:null,focus:settings.buildFocus}):null};
- return {runtime:{state:runtime.state},brand,appVersion,applicationUpdate:applicationUpdates?.state,mode,status,message,settings,overlayUX,planner:overlayOnly?null:planCombos(data,community,settings.planner),dataHealth:overlayOnly?null:{status:catalogStore?.status,communityStatus,snapshots:dataSnapshots,mechanicsVersion:mechanics.version,mechanicsVerified:mechanics.patches.includes(data.patch),storage:historyStore?.error||historyStore?.status,patch:data.patch,augments:data.augments.length,communityRelease:community?.releaseId,updatedAt:data.fetchedAt},display:overlayOnly?null:displayState(),hotkeyFailures,hotkeyListener,diagnostic,targetOptions:overlayOnly?[]:Object.values(data.items).filter(i=>i.gold?.total>=1800&&engine.itemValid(i,champ,snapshot?.gameData?.mapNumber||12)).map(i=>({id:i.id,name:i.name})).sort((a,b)=>a.name.localeCompare(b.name)),community:community?.patch===data.patch?{source:community.source,statsDate:community.statsDate,combos:communityCombos}:null,client:client?{phase:client.phase,queueId:client.queueId,version:client.version}:null,
+ return {runtime:{state:runtime.state},brand,appVersion,applicationUpdate:applicationUpdates?.state,mode,status,message,settings,overlayUX,overlayDiagnostic:overlayDiagnostic(),visibleSession:visibleSession(snapshot,data),staticReference:settings.staticReference||null,planner:overlayOnly?null:planCombos(data,community,settings.planner),dataHealth:overlayOnly?null:{status:catalogStore?.status,communityStatus,snapshots:dataSnapshots,mechanicsVersion:mechanics.version,mechanicsVerified:mechanics.patches.includes(data.patch),storage:historyStore?.error||historyStore?.status,patch:data.patch,augments:data.augments.length,communityRelease:community?.releaseId,updatedAt:data.fetchedAt},display:overlayOnly?null:displayState(),hotkeyFailures,hotkeyListener,diagnostic,targetOptions:overlayOnly?[]:Object.values(data.items).filter(i=>i.gold?.total>=1800&&engine.itemValid(i,champ,snapshot?.gameData?.mapNumber||12)).map(i=>({id:i.id,name:i.name})).sort((a,b)=>a.name.localeCompare(b.name)),community:community?.patch===data.patch?{source:community.source,statsDate:community.statsDate,combos:communityCombos}:null,client:client?{phase:client.phase,queueId:client.queueId,version:client.version}:null,
    champion:champ?data.champions[champ]||{id:champ,name:champ}:null,catalog:overlayOnly?null:safeCatalog(),lastLive,stale,versionWarning,roster,rosterTierStatus:{loaded:rosterIds.filter(id=>augmentReferenceCache.get(id)?.patch===data.patch).length,total:rosterIds.length},
    gameTime:snapshot?.gameData?.gameTime||0,gameMode:client?.queueId===2400?'ARAM Hỗn Loạn':snapshot?.gameData?.gameMode||'',
    owned,ownedNames:owned.map(id=>data.augments.find(a=>a.id===id)?.name||id),offered,offerDetails:offered.map(id=>data.augments.find(a=>a.id===id)||null),topAugments,scan,updating,assessment:overlayOnly&&assessment?{offers:assessment.offers,advice:assessment.advice,bestIds:assessment.bestIds}:assessment,augmentReference:augmentReference?.patch===data.patch?{source:'OP.GG',patch:augmentReference.patch,url:augmentReference.url,covered:Object.keys(augmentReference.tiers||{}).length,iconCount:Object.keys(augmentReference.icons||{}).length,ambiguousCount:(augmentReference.ambiguousIcons||[]).flat().length,total:augmentReference.total,catalogCount:data.augments.length}:null,augmentReferenceStatus:augmentReferenceFetching.has(champ)?'Đang tải tier theo tướng từ OP.GG…':augmentReferenceErrors.get(champ)?'Nguồn OP.GG tạm lỗi; đang thử lại. Hiển thị ước tính theo cơ chế khi có.':'Đang chờ dữ liệu tier theo tướng.',badgeCenters:badgeLayout(gameClientRect,effectiveRegions())?.centers||[],
@@ -193,7 +195,7 @@ function syncControlOverlay(){
  if(!controlOverlay.isVisible())controlOverlay.showInactive();
 }
 function syncBadgeOverlay(){
- if(POLICY.liveOCR!=='APPROVED'){badgeOverlay?.hide();return;}
+ if(!ownOcrEnabled){badgeOverlay?.hide();return;}
  if(!badgeOverlay||badgeOverlay.isDestroyed())return;
  const layout=badgeLayout(gameClientRect,effectiveRegions());
  const show=overlayVisibility().badges&&settings.cardTiersEnabled!==false&&mode==='live'&&!!snapshot&&gameFocused&&!!layout&&!!scan.scannedAt&&Date.now()-scan.scannedAt<90000&&offered.some(Boolean);
@@ -205,7 +207,7 @@ function syncBadgeOverlay(){
 function saveSettings(){const saved=structuredClone(settings);settingsWrites=settingsWrites.catch(()=>{}).then(()=>releaseRuntime.saveSettings(userDir,saved));return settingsWrites;}
 function resetMatch(){rerolls.clear();scanRevision++;historyGame='';lastHistoryTime=-1;epoch++;owned=[];offered=[];enemyAugments={};targetItem='';settings.role='auto';assessmentCache.clear();scan={status:'Sẵn sàng',matches:[],enemyCandidates:[]};autoScanState={gate:0,attempts:0,nextAt:0,complete:false};monitorState={suspected:0,rescans:0,observing:false,allChanged:false};pendingChoice=null;bufferedClick=null;ocr.reset();}
 function maybeRefreshBuild(){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  if(mode==='demo'||!data?.patch)return;
  const champ=currentChampion();if(!champ)return;
  const cached=referenceCache.get(champ),now=Date.now();
@@ -217,7 +219,7 @@ function maybeRefreshBuild(){
 }
 async function refreshCommunity(){
  if(settings.localOnly)return;
- if(POLICY.liveAdvice!=='APPROVED'){await advanced?.request('sync-sources').catch(()=>{});return;}
+ if(!liveAdviceEnabled){await advanced?.request('sync-sources').catch(()=>{});return;}
  if(settings.localOnly)return;
  if(communityBusy||app.isQuitting)return;communityBusy=true;
  const catalog=data;
@@ -225,7 +227,7 @@ async function refreshCommunity(){
  catch(e){communityStatus='Giữ combo đã có: '+e.message;}finally{communityBusy=false;broadcast();}
 }
 async function inspectTab(){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  if(!diagnostic.armed||!gameFocused||mode!=='live'||!snapshot)return;
  if(ocr.busy||ocr.watching){diagnostic.status='OCR đang bận. Giữ Tab lại sau vài giây.';broadcast();return;}
  diagnostic.armed=false;diagnostic.status='Đang chụp và đọc bảng Tab…';broadcast();
@@ -244,7 +246,7 @@ async function inspectTab(){
  finally{broadcast();}
 }
 function maybeRefreshAugments(champ=currentChampion()){
- if(POLICY.opgg!=='APPROVED')return;
+ if(!['APPROVED','PUBLIC_TIER_CACHE'].includes(POLICY.opgg))return;
  if(mode==='demo'||!data?.patch)return;
  if(!champ)return;
  const cached=augmentReferenceCache.get(champ),now=Date.now();
@@ -264,16 +266,15 @@ function maybeRefreshAugments(champ=currentChampion()){
    .finally(()=>{augmentReferenceFetching.delete(champ);broadcast();});
 }
 function maybeRefreshRosterAugments(){
- if(POLICY.liveAdvice!=='APPROVED')return;
- const roster=snapshot?.gameData?.gameMode==='KIWI'||client?.queueId===2400?rosterChampions():[];
+ if(!liveAdviceEnabled)return;
  const viewed=main?.isVisible()&&!main?.isMinimized()?historyTierChampions:[];
- for(const champ of [...new Set([...roster,...viewed])]){
+ for(const champ of [...new Set([currentChampion(),...viewed].filter(Boolean))]){
    if(augmentReferenceFetching.size>=3)break;
    maybeRefreshAugments(champ);
  }
 }
 runtime.on('transition',()=>{if(reader&&!polling)schedulePoll();});
-function schedulePoll(){clearTimeout(pollTimer);const delay=POLICY.visibleSession==='READ_ONLY'||POLICY.liveAdvice==='APPROVED'?runtime.delay():['SUSPENDED','DEMO','STOPPED'].includes(runtime.state)?null:Math.max(250,runtime.nextClient-Date.now());if(delay!==null&&!app.isQuitting)pollTimer=setTimeout(poll,delay);}
+function schedulePoll(){clearTimeout(pollTimer);const delay=POLICY.visibleSession==='READ_ONLY'||liveAdviceEnabled?runtime.delay():['SUSPENDED','DEMO','STOPPED'].includes(runtime.state)?null:Math.max(250,runtime.nextClient-Date.now());if(delay!==null&&!app.isQuitting)pollTimer=setTimeout(poll,delay);}
 async function poll(){
  if(polling||mode==='demo'||app.isQuitting||runtime.state==='SUSPENDED')return;polling=true;
  const pollEpoch=epoch;
@@ -281,7 +282,7 @@ async function poll(){
    if(runtime.due('client')){const c=await reader.readClient();if(mode!=='live'||pollEpoch!==epoch)return;client=c?{...c,checkedAt:Date.now()}:null;runtime.dispatch('CLIENT',c);const wanted=c?.version?.match(/^\d+\.\d+/)?.[0];if(wanted&&wanted!==data.patch){const cached=await catalogStore?.forPatch(wanted);if(mode!=='live'||pollEpoch!==epoch)return;if(cached)activateCatalog(cached);}}
    if(pendingCatalog&&!['InProgress','GameStart','Reconnect'].includes(client?.phase)){activateCatalog(pendingCatalog);pendingCatalog=null;}
     status=client?'Đã kết nối client · quan sát thụ động':'Ngoại tuyến · cache sẵn sàng';
-    const readLive=(POLICY.visibleSession==='READ_ONLY'||POLICY.liveAdvice==='APPROVED')&&runtime.due('live');
+    const readLive=(POLICY.visibleSession==='READ_ONLY'||liveAdviceEnabled)&&runtime.due('live');
    const live=readLive?await reader.readLive().catch(()=>null):null;
    if(mode!=='live'||pollEpoch!==epoch)return;
    if(validLive(live)&&!['POSTGAME','CLIENT','CHAMP_SELECT'].includes(runtime.state)){
@@ -303,7 +304,7 @@ async function poll(){
  }catch{status='Kết nối tạm gián đoạn';broadcast();}finally{polling=false;schedulePoll();}
 }
 function maybeAutoScan(){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  if(rerolls.pending||displaySetupOpen||!settings.autoScan||!settings.overlayEnabled||mode!=='live'||!snapshot||!gameFocused||ocr.busy||ocr.watching||Date.now()-lastLive>4000)return;
  if(snapshot.gameData?.gameMode!=='KIWI'&&client?.queueId!==2400)return;
  const self=engine.findSelf(snapshot);
@@ -314,7 +315,7 @@ function maybeAutoScan(){
  if(attempt)runScan(false,false,true);
 }
 async function maybeWatchCards(){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  if(rerolls.pending||!settings.overlayEnabled||mode!=='live'||!snapshot||!gameFocused||!offered.some(Boolean)||!scan.scannedAt||ocr.busy||monitorState.observing)return;
  if(Date.now()-scan.scannedAt>90000){offered=[];scan.matches=[];pendingChoice=null;bufferedClick=null;scan.status='Bộ thẻ đã hết thời gian hiển thị; F8 để đọc lại nếu vẫn đang chọn.';broadcast();return;}
  monitorState.observing=true;
@@ -332,14 +333,14 @@ async function maybeWatchCards(){
 function scanTick(){if(app.isQuitting)return;maybeAutoScan();maybeWatchCards();scanTimer=setTimeout(scanTick,snapshot&&gameFocused?2500:10000);}
 function pumpReroll(){if(app.isQuitting)return;maybeReadReroll();if(rerolls.pending)rerollTimer=setTimeout(pumpReroll,200);}
 function maybeReadReroll(){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  const ticket=rerolls.take(Date.now(),{busy:ocr?.busy||ocr?.watching,focused:gameFocused,enabled:settings.autoReroll&&settings.overlayEnabled&&mode==='live'&&!!snapshot});
  if(!ticket)return;
  if(ticket.expired){scan.status='Lượt tự đọc sau nhấp xoay đã hết hạn. F8 để đọc khi thẻ hiện rõ.';broadcast();return;}
  runScan(false,true,false,false,ticket);
 }
 async function runScan(enemy=false,force=false,auto=false,observedChange=false,rerollTicket=null){
- if(POLICY.liveOCR!=='APPROVED'){scan.status='DISABLED_UNTIL_APPROVED';broadcast();return;}
+ if(!ownOcrEnabled){scan.status='DISABLED_UNTIL_APPROVED';broadcast();return;}
  if(app.isQuitting||runtime.state==='SUSPENDED')return;
  if(mode==='demo'){message='Chế độ minh họa không chụp game. Chuyển sang trận thật để quét.';broadcast();return;}
  scan.feedbackAt=Date.now();
@@ -507,7 +508,7 @@ async function command(type,payload){
 function windowOptions(){return {icon:path.join(__dirname,'..','dist','nightveil.png'),webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true,backgroundThrottling:true},backgroundColor:'#0b1019',autoHideMenuBar:true};}
 const hotkeyTimes={};
 function handleGameClick(x,y){
- if(POLICY.liveAdvice!=='APPROVED')return;
+ if(!liveAdviceEnabled)return;
  // Native helper observes global clicks; UI clicks must never confirm a card.
  const point=screen.screenToDipPoint?.({x,y});
  if(point&&[controlOverlay,settings.overlayClickThrough===false?overlay:null].some(w=>{
@@ -533,13 +534,13 @@ function handleGameClick(x,y){
  else if(!hasOffer&&ocr.busy&&Date.now()-(scan.feedbackAt||0)<60000&&!bufferedClick)bufferedClick={index:card.index,clickedAt:Date.now()};
 }
 function handleHotkey(name){
- if(POLICY.liveOCR!=='APPROVED'&&(/SCAN|OWN_|TAB_READY/.test(name)))return;
+ if(!ownOcrEnabled&&(/SCAN|OWN_|TAB_READY/.test(name)))return;
  if(name==='TAB_DOWN'||name==='TAB_UP'){tabHeld=name==='TAB_DOWN';broadcast();return;}
  if(name==='TAB_READY'){inspectTab();return;}
  const now=Date.now();if(now-(hotkeyTimes[name]||0)<650)return;hotkeyTimes[name]=now;
  scan.lastHotkey=name;scan.feedbackAt=now;
  if(name==='SCAN_SELF'||name==='SCAN_SELF_CHORD')runScan(false,true);
- else if(name==='SCAN_ENEMY_CHORD')runScan(true,true);
+ else if(name==='SCAN_ENEMY_CHORD'){scan.status='Lõi đối thủ không hiển thị trong Tab/API; không thể quét dữ liệu chưa nhìn thấy.';broadcast();}
  else if(name.startsWith('OWN_'))confirmOffer(Number(name.at(-1))-1);
  else if(name==='OVERLAY'){settings.overlayEnabled=!settings.overlayEnabled;saveSettings();broadcast();}
  else if(name==='CYCLE'){command('overlay-cycle').catch(()=>{});}
@@ -555,7 +556,7 @@ async function startHotkeyHelper(){
   hotkeyHelper=spawn('powershell.exe',['-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',script,'-ParentProcessId',String(process.pid)],{windowsHide:true,stdio:['ignore','pipe','pipe']});
   let pending='';
   hotkeyHelper.stdout.setEncoding('utf8');
-  hotkeyHelper.stdout.on('data',chunk=>{pending+=chunk;let end;while((end=pending.indexOf('\n'))>=0){const line=pending.slice(0,end).trim();pending=pending.slice(end+1);if(line==='READY'){hotkeyListener='Sẵn sàng';broadcast();}else if(line==='GAME_FOCUS'){if(!gameFocused){gameFocused=true;runtime.dispatch('FOCUS',true);schedulePoll();broadcast();}}else if(line==='GAME_BLUR'){gameFocused=false;runtime.dispatch('FOCUS',false);tabHeld=false;gameClientRect=null;gamePhysicalRect=null;gameOuterRect=null;broadcast();}else if(line.startsWith('GAME_RECT ')){const values=line.slice(10).split(' ').map(Number);if(values.length===4&&values.every(Number.isFinite)&&values[2]>200&&values[3]>200){gamePhysicalRect={x:values[0],y:values[1],width:values[2],height:values[3]};gameClientRect=screen.screenToDipRect(null,gamePhysicalRect);if(!gameFocused){runtime.dispatch('FOCUS',true);schedulePoll();clearTimeout(scanTimer);if(POLICY.liveOCR==='APPROVED')scanTimer=setTimeout(scanTick,0);}gameFocused=true;broadcast();}}else if(line.startsWith('GAME_WINDOW ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)gameOuterRect={x:v[0],y:v[1],width:v[2],height:v[3]};}else if(line.startsWith('CLIENT_RECT ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)leagueClientRect=screen.screenToDipRect(null,{x:v[0],y:v[1],width:v[2],height:v[3]});}else if(line.startsWith('GAME_CLICK ')){const values=line.slice(11).split(' ').map(Number);if(values.length===2&&values.every(Number.isFinite))handleGameClick(values[0],values[1]);}else if(line)handleHotkey(line);}});
+  hotkeyHelper.stdout.on('data',chunk=>{pending+=chunk;let end;while((end=pending.indexOf('\n'))>=0){const line=pending.slice(0,end).trim();pending=pending.slice(end+1);if(line==='READY'){hotkeyListener='Sẵn sàng';broadcast();}else if(line==='GAME_FOCUS'){if(!gameFocused){gameFocused=true;runtime.dispatch('FOCUS',true);schedulePoll();broadcast();}}else if(line==='GAME_BLUR'){gameFocused=false;runtime.dispatch('FOCUS',false);tabHeld=false;gameClientRect=null;gamePhysicalRect=null;gameOuterRect=null;broadcast();}else if(line.startsWith('GAME_RECT ')){const values=line.slice(10).split(' ').map(Number);if(values.length===4&&values.every(Number.isFinite)&&values[2]>200&&values[3]>200){gamePhysicalRect={x:values[0],y:values[1],width:values[2],height:values[3]};gameClientRect=screen.screenToDipRect(null,gamePhysicalRect);if(!gameFocused){runtime.dispatch('FOCUS',true);schedulePoll();clearTimeout(scanTimer);if(ownOcrEnabled)scanTimer=setTimeout(scanTick,0);}gameFocused=true;broadcast();}}else if(line.startsWith('GAME_WINDOW ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)gameOuterRect={x:v[0],y:v[1],width:v[2],height:v[3]};}else if(line.startsWith('CLIENT_RECT ')){const v=line.slice(12).split(' ').map(Number);if(v.length===4&&v.every(Number.isFinite)&&v[2]>200&&v[3]>200)leagueClientRect=screen.screenToDipRect(null,{x:v[0],y:v[1],width:v[2],height:v[3]});}else if(line.startsWith('GAME_CLICK ')){const values=line.slice(11).split(' ').map(Number);if(values.length===2&&values.every(Number.isFinite))handleGameClick(values[0],values[1]);}else if(line)handleHotkey(line);}});
   hotkeyHelper.stderr.setEncoding('utf8');
   hotkeyHelper.stderr.on('data',chunk=>{hotkeyListener='Lỗi bộ nghe phím: '+chunk.trim().slice(0,120);broadcast();});
   hotkeyHelper.on('error',()=>{hotkeyListener='Không khởi động được';broadcast();});
@@ -576,10 +577,12 @@ async function boot(){
  if(settings.regionsManual===undefined)settings.regionsManual=JSON.stringify(settings.regions)!==JSON.stringify(defaults.regions);
  if(settings.inputSafetyVersion!==2){settings.autoScan=false;settings.inputSafetyVersion=2;delete settings.overlayInteractive;await saveSettings();}
  if(settings.autoScanVersion!==1){settings.autoScan=true;settings.autoScanVersion=1;await saveSettings();}
+ if(settings.liveFeatureVersion!==1){settings.autoScan=true;settings.autoReroll=true;settings.cardTiersEnabled=true;settings.liveFeatureVersion=1;await saveSettings();}
  if(recoveryMode){settings.autoScan=false;settings.overlayEnabled=false;message='Đã mở chế độ phục hồi sau nhiều lần thoát bất thường; tự quét và overlay đang tạm tắt.';}
  catalogStore=new CatalogStore(userDir);data=await catalogStore.load(require('../data/catalog.json'));dataSnapshots=await catalogStore.entries();
  advanced=new AdvancedService(historyStore);await advanced.initialize(data);
- settings.autoScan=false;settings.autoReroll=false;settings.cardTiersEnabled=false;
+ // Respect each user's saved scan and tier preferences. Scanning captures only
+ // visible game pixels and never sends input to the game.
  settings.planner=sanitizeDraft(settings.planner,data);if(!FOCUSES[settings.buildFocus])settings.buildFocus='auto';
  try{const saved=JSON.parse(await fs.readFile(path.join(userDir,'augment-references.json'),'utf8'));for(const [champ,ref] of Object.entries(saved)){if(ref?.patch===data.patch&&ref?.champion===champ&&Object.keys(ref.ranks||{}).length>=20)augmentReferenceCache.set(champ,ref);}}catch{}
  try{const saved=JSON.parse(await fs.readFile(path.join(userDir,'build-references.json'),'utf8'));for(const [champ,ref] of Object.entries(saved)){if(ref?.patch===data.patch&&ref?.champion===champ&&Array.isArray(ref.builds))referenceCache.set(champ,ref);}}catch{}
@@ -608,7 +611,7 @@ async function boot(){
  main.on('show',()=>{if(!main.isDestroyed())main.webContents.send('state:changed',getState());});
  main.on('closed',()=>{main=null;app.quit();});
  const keys=[['CommandOrControl+Shift+A','SCAN_SELF_CHORD'],['F8','SCAN_SELF'],['CommandOrControl+Shift+1','OWN_1'],['CommandOrControl+Shift+2','OWN_2'],['CommandOrControl+Shift+3','OWN_3'],['CommandOrControl+Shift+O','OVERLAY'],['CommandOrControl+Shift+E','SCAN_ENEMY_CHORD'],['CommandOrControl+Shift+M','SIDE'],['CommandOrControl+Shift+C','MAIN'],['CommandOrControl+Shift+Space','CYCLE'],['CommandOrControl+Shift+I','INTERACT']];
- const activeKeys=POLICY.liveOCR==='APPROVED'?keys:keys.filter(([,name])=>['OVERLAY','SIDE','MAIN','CYCLE','INTERACT'].includes(name));
+ const activeKeys=ownOcrEnabled?keys:keys.filter(([,name])=>['OVERLAY','SIDE','MAIN','CYCLE','INTERACT'].includes(name));
  hotkeyFailures=activeKeys.filter(([key,name])=>!globalShortcut.register(key,()=>handleHotkey(name))).map(([key])=>key);if(hotkeyFailures.length)message='Một số phím tắt đang được ứng dụng khác sử dụng. Chi tiết trong Thiết lập; bộ nghe phím trong game vẫn hoạt động khi sẵn sàng.';
  for(const event of ['display-added','display-removed','display-metrics-changed'])screen.on(event,()=>{clearTimeout(displayChangeTimer);displayChangeTimer=setTimeout(()=>{if(app.isQuitting)return;if(gamePhysicalRect)gameClientRect=screen.screenToDipRect(null,gamePhysicalRect);positionOverlay();fitMain();broadcast();},80);});
  await startHotkeyHelper();
@@ -617,7 +620,7 @@ async function boot(){
  let feedVerified=false;if(app.isPackaged&&releaseConfig.updatesEnabled){try{feedVerified=releaseRuntime.verifiedFeed(releaseConfig,require('js-yaml').load(await fs.readFile(path.join(process.resourcesPath,'app-update.yml'),'utf8')));}catch{diagnostics.record('update-config-invalid');}}
  applicationUpdates=new releaseRuntime.ApplicationUpdates({updater:feedVerified?require('electron-updater').autoUpdater:null,enabled:feedVerified,busy:releaseBusy,changed:broadcast,backup:async()=>{await saveSettings();await historyStore.backup();await diagnostics.record('install-update');}});
  healthyTimer=setTimeout(()=>diagnostics.healthy().catch(()=>{}),60000);
- /* Live OCR disabled by policy; no scan loop. */
+ if(ownOcrEnabled)scanTimer=setTimeout(scanTick,500);
  // Reroll timer is armed only by an observed reroll click.
  updateTimer=setInterval(()=>{if(!settings.localOnly)applicationUpdates?.check();if(!settings.localOnly)advanced?.request('sync-sources').catch(()=>{});if(!snapshot&&!ocr.busy&&!ocr.watching)ocr.close().catch(()=>{});if(!snapshot&&Date.now()-new Date(data.fetchedAt).getTime()>6*3600000)update();},60000);
  await poll();broadcast();if(displaySetupOpen)main.show();else if(snapshot)main.minimize();else if(client)main.showInactive();else main.show();
