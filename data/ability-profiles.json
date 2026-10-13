@@ -1,0 +1,1003 @@
+{
+  "schema": 1,
+  "patch": "16.20",
+  "version": "16.20.1",
+  "fetchedAt": "2026-10-13T15:48:53.180Z",
+  "method": "Tags là diễn giải cơ chế của DVM; không mô phỏng damage hoặc bảo đảm tương tác proc.",
+  "champions": {
+    "Lux": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Lux.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Light Binding",
+          "description": "Lux releases a sphere of light that binds and deals damage to up to two enemy units.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Prismatic Barrier",
+          "description": "Lux throws her wand and bends the light around any friendly target it touches, protecting them from enemy damage.",
+          "tags": [
+            "shield"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Lucent Singularity",
+          "description": "Fires an anomaly of twisted light to an area, which slows nearby enemies. Lux can detonate it to damage enemies in the area of effect.",
+          "tags": [
+            "ap",
+            "spell"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Final Spark",
+          "description": "After gathering energy, Lux fires a beam of light that deals damage to all targets in the area. In addition, triggers Lux's passive ability and refreshes the Illumination debuff duration.",
+          "tags": [
+            "longrange"
+          ]
+        }
+      ]
+    },
+    "Brand": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Brand.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Blaze",
+          "description": "Brand's spells light his targets ablaze, dealing damage over 4 seconds, stacking up to 3 times. If Brand kills an enemy while it is ablaze he regains mana. When Blaze reaches max stacks on a Champion or large monster, it becomes unstable. It detonates in 2 seconds, applying spell effects and dealing massive damage in an area around the victim.",
+          "tags": [
+            "dot"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Sear",
+          "description": "Brand launches a ball of fire forward that deals magic damage. If the target is ablaze, Sear will stun the target.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Pillar of Flame",
+          "description": "After a short delay, Brand creates a Pillar of Flame at a target area, dealing magic damage to enemy units within the area. Units that are ablaze take an additional 25% damage.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Conflagration",
+          "description": "Brand conjures a powerful blast at his target that spreads to nearby enemies, dealing magic damage. If the target is ablaze, Conflagration's spread is doubled.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Pyroclasm",
+          "description": "Brand unleashes a devastating torrent of fire that bounces up to 5 times off of Brand and nearby enemies, dealing magic damage to enemies each time bounce. Bounces prioritize stacking Blaze to max on Champions. If a target is ablaze, Pyroclasm will briefly slow them.",
+          "tags": [
+            "spell"
+          ]
+        }
+      ]
+    },
+    "Soraka": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Soraka.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Starcall",
+          "description": "A star falls from the sky at the target location dealing magic damage and slowing enemies. If an enemy champion is hit by Starcall, Soraka recovers Health.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Astral Infusion",
+          "description": "Soraka sacrifices a portion of her own health to heal another friendly champion.",
+          "tags": [
+            "heal"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Equinox",
+          "description": "Creates a zone at a location that silences all enemies inside. When the zone expires, all enemies still inside are rooted.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Wish",
+          "description": "Soraka fills her allies with hope, instantly restoring health to herself and all allied champions.",
+          "tags": [
+            "heal"
+          ]
+        }
+      ]
+    },
+    "Evelynn": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Evelynn.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Hate Spike",
+          "description": "Evelynn strikes out with her Lasher, dealing damage to the first unit hit. Then, Evelynn can shoot a line of spikes at nearby foes a few times.",
+          "tags": [
+            "spell",
+            "ap"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Allure",
+          "description": "Evelynn curses her target, causing her next attack or spell after a delay to charm her target and reduce their magic resist.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Whiplash",
+          "description": "Evelynn whips her target with her Lasher, dealing damage. She then gains Move Speed for a short duration.",
+          "tags": [
+            "ap",
+            "attack"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Last Caress",
+          "description": "Evelynn briefly goes untargetable and decimates the area in front of her before warping backwards a long distance.",
+          "tags": [
+            "dash",
+            "execute"
+          ]
+        }
+      ]
+    },
+    "Vayne": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Vayne.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Tumble",
+          "description": "Vayne tumbles, maneuvering to carefully place her next shot. Her next attack deals bonus damage.",
+          "tags": [
+            "dash",
+            "attack"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Silver Bolts",
+          "description": "Vayne tips her bolts with a rare metal, toxic to evil things. The third consecutive attack or ability against the same target deals a percentage of the target's max health as bonus true damage.",
+          "tags": [
+            "onhit",
+            "antitank"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Condemn",
+          "description": "Vayne draws a heavy crossbow from her back, and fires a huge bolt at her target, knocking them back and dealing damage. If they collide with terrain, they are impaled, dealing bonus damage and stunning them.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Final Hour",
+          "description": "Readying herself for an epic confrontation, Vayne gains increased Attack Damage, Invisibility during Tumble, reduced Tumble cooldown, and more bonus Move Speed from Night Hunter",
+          "tags": [
+            "attack"
+          ]
+        }
+      ]
+    },
+    "KogMaw": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/KogMaw.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Caustic Spittle",
+          "description": "Kog'Maw launches a corrosive projectile which deals magic damage and corrodes the target's armor and magic resist for a short time. Kog'Maw also gains additional attack speed.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Bio-Arcane Barrage",
+          "description": "Kog'Maw's attacks gain range and deal a percent of the target's maximum health as magic damage %i:OnHit% <OnHit>On-Hit</OnHit>.",
+          "tags": [
+            "onhit",
+            "antitank"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Void Ooze",
+          "description": "Kog'Maw launches a peculiar ooze which damages all enemies it passes through and leaves a trail which slows enemies who stand on it.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Living Artillery",
+          "description": "Kog'Maw fires an artillery shell at a great distance dealing magic damage (increased significantly on low health enemies) and revealing non-stealthed targets. Additionally, multiple Living Artilleries in a short period of time cause them to cost additional Mana.",
+          "tags": [
+            "longrange"
+          ]
+        }
+      ]
+    },
+    "Jinx": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Jinx.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Switcheroo!",
+          "description": "Jinx modifies her basic attacks by swapping between Pow-Pow, her minigun and Fishbones, her rocket launcher. Attacks with Pow-Pow grant Attack Speed, while attacks with Fishbones deal area of effect damage, gain increased range, but drain Mana and attack slower.",
+          "tags": [
+            "attack",
+            "crit"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Zap!",
+          "description": "Jinx uses Zapper, her shock pistol, to fire a blast that deals damage to the first enemy hit, slowing and revealing it.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Flame Chompers!",
+          "description": "Jinx throws out a line of snare grenades that explode after 5 seconds, lighting enemies on fire. Flame Chompers will bite enemy champions who walk over them, rooting them in place.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Super Mega Death Rocket!",
+          "description": "Jinx fires a super rocket across the map that gains damage as it travels. The rocket will explode upon colliding with an enemy champion, dealing damage to it and surrounding enemies based on their missing Health.",
+          "tags": [
+            "longrange"
+          ]
+        }
+      ]
+    },
+    "Kayle": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Kayle.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Divine Ascent",
+          "description": "Kayle's attacks are empowered by the heavens as she levels up and spends skill points. Her wings are lit aflame as she progressively gains Attack Speed, Move Speed, Attack Range, and waves of fire on her attacks.",
+          "tags": [
+            "onhit"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Radiant Blast",
+          "description": "Kayle conjures a portal, summoning a celestial sword that pierces through enemies, slowing, damaging, and reducing the resistances of all hit.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Celestial Blessing",
+          "description": "Blessed by the divine, Kayle heals and grants Move Speed to herself and the nearest ally.",
+          "tags": [
+            "heal"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Starfire Spellblade",
+          "description": "Passive: Kayle's celestial sword, Virtue, deals bonus magic damage to enemies she attacks.<br><br>Active: Kayle's next attack smites her target with celestial fire, dealing bonus damage proportionate to their missing health.",
+          "tags": [
+            "onhit",
+            "ap"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Divine Judgment",
+          "description": "Kayle makes an ally invulnerable and calls upon former Aspects of Justice to purify the area around her target with a holy rain of swords.",
+          "tags": [
+            "shield"
+          ]
+        }
+      ]
+    },
+    "Aatrox": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Aatrox.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Deathbringer Stance",
+          "description": "Periodically, Aatrox's next basic attack deals bonus <magicDamage>magic damage</magicDamage> and heals him, based on the target's max health. ",
+          "tags": [
+            "sustain"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "The Darkin Blade",
+          "description": "Aatrox slams his greatsword down, dealing physical damage. He can swing three times, each with a different area of effect.",
+          "tags": [
+            "spell",
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Infernal Chains",
+          "description": "Aatrox smashes the ground, dealing damage to the first enemy hit. Champions and large monsters have to leave the impact area quickly or they will be dragged to the center and take the damage again.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Umbral Dash",
+          "description": "Passively, Aatrox heals when damaging enemy champions. On activation, he dashes in a direction.",
+          "tags": [
+            "dash",
+            "sustain"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "World Ender",
+          "description": "Aatrox unleashes his demonic form, fearing nearby enemy minions and gaining attack damage, increased healing, and Move Speed. If he gets a takedown, this effect is extended.",
+          "tags": [
+            "sustain"
+          ]
+        }
+      ]
+    },
+    "Malphite": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Malphite.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Seismic Shard",
+          "description": "Malphite sends a shard of the earth through the ground at his foe, dealing damage upon impact and stealing Move Speed for 3 seconds.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Thunderclap",
+          "description": "Malphite attacks with such force that it creates a sonic boom. For the next few seconds, his attacks create aftershocks in front of him.",
+          "tags": [
+            "armor",
+            "attack"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Ground Slam",
+          "description": "Malphite slams the ground, sending out a shockwave that deals magic damage based on his Armor and reduces the Attack Speed of enemies for a short duration.",
+          "tags": [
+            "armor",
+            "spell"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Unstoppable Force",
+          "description": "Malphite launches himself to a location at high speed, damaging enemies and knocking them into the air.",
+          "tags": [
+            "dash",
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Leona": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Leona.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Shield of Daybreak",
+          "description": "Leona uses her shield to perform her next basic attack, dealing bonus magic damage and stunning the target.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Eclipse",
+          "description": "Leona raises her shield to gain Damage Reduction, Armor, and Magic Resist. When the duration first ends, if there are nearby enemies, she will deal magic damage to them and prolong the duration of the effect.",
+          "tags": [
+            "armor"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Zenith Blade",
+          "description": "Leona projects a solar image of her sword, dealing magic damage to all enemies in a line. When the image fades, the last enemy champion struck will be briefly immobilized and Leona will dash to them.",
+          "tags": [
+            "dash",
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Solar Flare",
+          "description": "Leona calls down a beam of solar energy, dealing damage to enemies in an area. Enemies in the center of the area are stunned, while enemies on the outside are slowed.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Vladimir": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Vladimir.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Crimson Pact",
+          "description": "Every 30 points of bonus Health gives Vladimir 1 Ability Power and every 1 point of Ability Power gives Vladimir 1.6 bonus Health (does not stack with itself).",
+          "tags": [
+            "ap",
+            "health"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Transfusion",
+          "description": "Vladimir steals life from the target enemy. When Vladimir's resource is full, Transfusion will benefit from massively increased damage and healing for a brief time.",
+          "tags": [
+            "sustain"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Sanguine Pool",
+          "description": "Vladimir sinks into a pool of blood, becoming untargetable for 2 seconds. Additionally, enemies on the pool are slowed and Vladimir siphons life from them.",
+          "tags": [
+            "sustain"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Tides of Blood",
+          "description": "Vladimir pays his own health to charge up a reservoir of blood which, when released, deals damage in the area around him but can be blocked by enemy units.",
+          "tags": [
+            "ap"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Hemoplague",
+          "description": "Vladimir infects an area with a virulent plague. Affected enemies take increased damage for the duration. After a few seconds, Hemoplague deals magic damage to infected enemies and heals Vladimir for each enemy Champion hit.",
+          "tags": [
+            "spell"
+          ]
+        }
+      ]
+    },
+    "Janna": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Janna.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Howling Gale",
+          "description": "By creating a localized change in pressure and temperature, Janna is able to create a small storm that grows in size with time. She can activate the spell again to release the storm. On release this storm will fly towards the direction it was cast in, dealing damage and knocking away any enemies in its path.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Zephyr",
+          "description": "Janna summons an air elemental that passively increases her Move Speed and enables her to pass through units. She may also activate this ability to deal damage and slow an enemy's Move Speed.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Eye Of The Storm",
+          "description": "Janna conjures a defensive gale that shields an ally champion or turret from incoming damage and increases their Attack Damage.",
+          "tags": [
+            "shield"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Monsoon",
+          "description": "Janna surrounds herself in a magical storm, throwing enemies back. After the storm has settled, soothing winds heal nearby allies while the ability is active.",
+          "tags": [
+            "heal",
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Sona": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Sona.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Power Chord",
+          "description": "<passive>Accelerando</passive>: Sona gains non-Ultimate ability haste permanently for her basic abilities as she uses her abilities well, up to a cap. Beyond that cap, further successful uses reduce her ultimate's remaining cooldown instead.<br><br><passive>Power Chord</passive>: Every few spell casts, Sona's next attack will deal bonus magic damage in addition to an additional effect based on what basic Ability Sona last activated.",
+          "tags": [
+            "attack"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Hymn of Valor",
+          "description": "Sona plays the Hymn of Valor, sends out bolts of sound, dealing magic damage to two nearby enemies, prioritizing champions and monsters. Sona gains a temporary aura that grants allies tagged by the zone bonus damage on their next attack against enemies.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Aria of Perseverance",
+          "description": "Sona plays the Aria of Perseverance, sending out protective melodies, healing Sona and a nearby wounded ally. Sona gains a temporary aura that grants allies tagged by the zone a temporary shield.",
+          "tags": [
+            "heal",
+            "shield"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Song of Celerity",
+          "description": "Sona plays the Song of Celerity, granting nearby allies bonus Move Speed. Sona gains a temporary aura that grants allied champions tagged by the zone bonus Move Speed.",
+          "tags": [
+            "utility"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Crescendo",
+          "description": "Sona plays her ultimate chord, stunning enemy champions and forcing them to dance and dealing magic damage to them.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Zyra": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Zyra.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Garden of Thorns",
+          "description": "Seeds spawn around Zyra periodically, becoming faster with level. Zyra can cast Deadly Spines or Grasping Roots near seeds to grow plants, who fight for Zyra.",
+          "tags": [
+            "pets"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Deadly Spines",
+          "description": "Thick vines spread through the ground and explode into spines, dealing magic damage to enemies within the area. If cast near a seed, Deadly Spines grows a Thorn Spitter plant, which fires at enemies from afar.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Rampant Growth",
+          "description": "Zyra plants a seed, lasting up to 60 seconds. Deadly Spines and Grasping Roots cast near seeds will turn them into plants who fight for Zyra. Zyra can store multiple seeds at once, and killing enemies reduces Rampant Growth's recharge time.",
+          "tags": [
+            "pets"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Grasping Roots",
+          "description": "Zyra sends forth vines through the ground to ensnare her target, dealing damage and rooting enemies they come across. If cast near a seed, Grasping Roots grows a Vine Lasher, whose short range attacks reduce enemy Move Speed.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Stranglethorns",
+          "description": "Zyra summons a twisted thicket at her target location, dealing damage to enemies as it expands and knocking them airborne as it contracts. Plants within the thicket are enraged.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Katarina": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Katarina.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Voracity",
+          "description": "Whenever an enemy champion dies that Katarina has damaged recently, her remaining ability cooldowns are dramatically reduced.<br><br>If Katarina picks up a <font color='#FFF673'>Dagger</font>, she uses it to slash through all nearby enemies, dealing magic damage.",
+          "tags": [
+            "ap"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Bouncing Blade",
+          "description": "Katarina throws a <font color='#FFF673'>Dagger</font> at the target that then bounces to nearby enemies before ricocheting onto the ground.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Preparation",
+          "description": "Katarina gains a burst of Move Speed, tossing a <font color='#FFF673'>Dagger</font> into the air directly above herself.",
+          "tags": [
+            "ap"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Shunpo",
+          "description": "Katarina blinks to the target, striking it if its an enemy, or striking the nearest enemy otherwise.",
+          "tags": [
+            "dash"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Death Lotus",
+          "description": "Katarina becomes a flurry of blades, dealing massive magic damage while she channels to the 3 nearest enemy champions.",
+          "tags": [
+            "onhit",
+            "spell"
+          ]
+        }
+      ]
+    },
+    "Singed": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Singed.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Poison Trail",
+          "description": "Leaves a trail of poison behind Singed, dealing damage to enemies caught in the path.",
+          "tags": [
+            "dot"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Mega Adhesive",
+          "description": "Throws a vial of mega adhesive on the ground, slowing and grounding enemies who walk on it.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Fling",
+          "description": "Damages target enemy unit and flings them into the air behind Singed. If the target Singed flings lands in his Mega Adhesive, they are also rooted.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Insanity Potion",
+          "description": "Singed drinks a potent brew of chemicals, granting him increased combat stats, and making his Poison Trail apply Grievous Wounds.",
+          "tags": [
+            "sustain"
+          ]
+        }
+      ]
+    },
+    "Veigar": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Veigar.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Phenomenal Evil Power",
+          "description": "Veigar is the greatest Evil to ever strike at the hearts of Runeterra - and he's only getting bigger! Striking an enemy Champion with a spell or scoring a takedown grants Veigar permanently increased Ability Power.",
+          "tags": [
+            "stacks",
+            "ap"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Baleful Strike",
+          "description": "Veigar unleashes a bolt of dark energy that deals magic damage to the first two enemies hit. Units killed by this bolt grant Veigar some ability power permanently.",
+          "tags": [
+            "spell"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Dark Matter",
+          "description": "Veigar calls a great mass of dark matter to fall from the sky to the target location, dealing magic damage when it lands. Stacks of Phenomenal Evil reduce Dark Matter's cooldown.",
+          "tags": [
+            "ap"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Event Horizon",
+          "description": "Veigar twists the edges of space, creating a cage that Stuns enemies that pass through.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Primordial Burst",
+          "description": "Blasts target enemy champion, dealing a large amount of magic damage, increasing based on the target's missing health.",
+          "tags": [
+            "execute"
+          ]
+        }
+      ]
+    },
+    "Nasus": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Nasus.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Siphoning Strike",
+          "description": "Nasus strikes his foe, dealing damage and increasing the power of his future Siphoning Strikes if he slays his target.",
+          "tags": [
+            "stacks",
+            "attack"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Wither",
+          "description": "Nasus ages an enemy champion, decelerating their Move Speed and Attack Speed over time.",
+          "tags": [
+            "utility"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Spirit Fire",
+          "description": "Nasus unleashes a spirit flame at a location, dealing damage and reducing the Armor of enemies who stand on it.",
+          "tags": [
+            "shred"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Fury of the Sands",
+          "description": "Nasus unleashes a mighty sandstorm that batters nearby enemies. While the storm rages, he gains increased Health, Attack Range, damages nearby enemies, has a reduced cooldown on Siphoning Strike, and gains bonus Armor and Magic Resistance.",
+          "tags": [
+            "health"
+          ]
+        }
+      ]
+    },
+    "Cassiopeia": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Cassiopeia.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Noxious Blast",
+          "description": "Cassiopeia blasts an area with Poison after a brief delay, granting her increased Move Speed if she hits an enemy champion.",
+          "tags": [
+            "dot"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Miasma",
+          "description": "Cassiopeia releases several clouds of poison, slowing, grounding, and lightly damaging enemies that pass through them. Grounded enemies cannot use Movement abilities.",
+          "tags": [
+            "dot",
+            "cc"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Twin Fang",
+          "description": "Cassiopeia lets loose an attack that deals increased damage to Poisoned targets and heals her for a percentage of the damage dealt. If the target dies from this attack, Cassiopeia regains Mana.",
+          "tags": [
+            "spell",
+            "sustain"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Petrifying Gaze",
+          "description": "Cassiopeia releases a swirl of magical energy from her eyes, stunning any enemies in front of her that are facing her and slowing any others with their back turned.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    },
+    "Riven": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Riven.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Runic Blade",
+          "description": "Riven's abilities charge her blade, and her basic attacks expend charges to deal an additional damage.",
+          "tags": [
+            "attack"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Broken Wings",
+          "description": "Riven lashes out in a series of strikes. This ability can be reactivated three times in a short time frame with the third hit knocking back nearby enemies.",
+          "tags": [
+            "dash",
+            "cc"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Ki Burst",
+          "description": "Riven emits a Ki Burst, damaging and stunning nearby enemies.",
+          "tags": [
+            "cc"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Valor",
+          "description": "Riven steps forward a short distance and blocks incoming damage.",
+          "tags": [
+            "dash",
+            "shield"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Blade of the Exile",
+          "description": "Riven empowers her keepsake weapon with energy, and gains Attack Damage and Range. During this time, she also gains the ability to use Wind Slash, a powerful ranged attack, once.",
+          "tags": [
+            "execute"
+          ]
+        }
+      ]
+    },
+    "Yasuo": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Yasuo.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Way of the Wanderer",
+          "description": "Yasuo's Critical Strike Chance is increased. Additionally, Yasuo builds toward a shield whenever he is moving. The shield triggers when he takes damage from a champion or monster.",
+          "tags": [
+            "crit"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Steel Tempest",
+          "description": "Thrusts forward, damaging all enemies in a line.<br><br>On hit, grants a stack of Gathering Storm for a few seconds. At 2 stacks, Steel Tempest fires a whirlwind that knocks <font color='#6655CC'>Airborne</font>.<br><br>Steel Tempest is treated as a basic attack and scales with all the same things.",
+          "tags": [
+            "attack"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Wind Wall",
+          "description": "Creates a moving wall that blocks all enemy projectiles for 4 seconds.",
+          "tags": [
+            "utility"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Sweeping Blade",
+          "description": "Dashes through target enemy, dealing magic damage. Each cast increases subsequent dash's damage, up to a max amount.<br><br>Cannot be re-cast on the same enemy for a few seconds.<br><br><font color='#99FF99'>If Steel Tempest is cast while dashing, it will strike as a circle.</font>",
+          "tags": [
+            "dash"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Last Breath",
+          "description": "Blinks to an <factionIonia1>Airborne</factionIonia1> enemy champion, dealing physical damage and holding all <factionIonia1>Airborne</factionIonia1> enemies in the area in the air. Grants maximum Flow but resets all stacks of Gathering Storm.<br><br>For a moderate time afterwards, Yasuo's critical strikes gain significant Bonus Armor Penetration.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    },
+    "MasterYi": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/MasterYi.json",
+      "abilities": [
+        {
+          "slot": "Q",
+          "name": "Alpha Strike",
+          "description": "Master Yi teleports across the battlefield with blinding speed, dealing physical damage to multiple units in his path, while simultaneously becoming untargetable. Alpha Strike can critically strike and deals bonus physical damage to monsters. Basic attacks reduce Alpha Strike's cooldown.",
+          "tags": [
+            "attack"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Meditate",
+          "description": "Master Yi rejuvenates his body by focus of mind, restoring Health and taking reduced damage for a short time. In addition, Master Yi will gain stacks of Double Strike and pause the remaining duration on Wuju Style and Highlander for each second he channels.",
+          "tags": [
+            "sustain"
+          ]
+        },
+        {
+          "slot": "E",
+          "name": "Wuju Style",
+          "description": "Grants bonus true damage on basic attacks.",
+          "tags": [
+            "onhit"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Highlander",
+          "description": "Master Yi moves with unparalleled agility, temporarily increasing his Move Speed and Attack Speed as well as making him immune to all slowing effects. While active, Champion kills or assists extend Highlander's duration. Passively reduces cooldown for his other abilities on a kill or assist.",
+          "tags": [
+            "attack"
+          ]
+        }
+      ]
+    },
+    "Ashe": {
+      "source": "https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/champion/Ashe.json",
+      "abilities": [
+        {
+          "slot": "P",
+          "name": "Frost Shot",
+          "description": "Ashe's attacks slow their target, causing her to deal increased damage to these targets.<br><br>Ashe's critical strikes deal no bonus damage but apply an empowered slow to the target.",
+          "tags": [
+            "utility",
+            "attack"
+          ]
+        },
+        {
+          "slot": "Q",
+          "name": "Ranger's Focus",
+          "description": "Ashe builds up Focus by attacking. At maximum Focus, Ashe can cast Ranger's Focus to consume all stacks of Focus, temporarily increasing her Attack Speed and transforming her basic attack into a powerful flurry attack for the duration.",
+          "tags": [
+            "attack"
+          ]
+        },
+        {
+          "slot": "W",
+          "name": "Volley",
+          "description": "Ashe fires arrows in a cone for increased damage. Also applies Frost Shot.",
+          "tags": [
+            "longrange"
+          ]
+        },
+        {
+          "slot": "R",
+          "name": "Enchanted Crystal Arrow",
+          "description": "Ashe fires a missile of ice in a straight line. If the arrow collides with an enemy Champion, it deals damage and stuns the Champion, stunning for longer the farther arrow has traveled. In addition, surrounding enemy units take damage and are slowed.",
+          "tags": [
+            "cc"
+          ]
+        }
+      ]
+    }
+  }
+}

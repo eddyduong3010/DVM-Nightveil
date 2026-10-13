@@ -1,0 +1,22 @@
+{
+  "riot": {
+    "checkedAt": "2026-10-13T17:33:09.349Z",
+    "lastSuccess": "2026-10-13T17:33:09.349Z",
+    "status": "CURRENT",
+    "patch": "16.20.1",
+    "release": "16.20.1",
+    "coverage": "Data Dragon versions",
+    "license": "Riot developer terms",
+    "error": null
+  },
+  "mayhem": {
+    "checkedAt": "2026-10-13T17:33:09.349Z",
+    "lastSuccess": "2026-10-13T17:33:09.349Z",
+    "status": "CURRENT",
+    "patch": "26.20",
+    "release": "website:20261012_104019:a9c15dc933c4",
+    "coverage": "Augments 201; combos 666",
+    "license": "CC BY 4.0",
+    "error": null
+  }
+}

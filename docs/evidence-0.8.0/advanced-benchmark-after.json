@@ -1,0 +1,60 @@
+{
+  "label": "after",
+  "displays": [
+    {
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 2560,
+        "height": 1440
+      },
+      "scale": 1
+    }
+  ],
+  "platform": "win32",
+  "electron": "44.7.0",
+  "startupMs": 401,
+  "scenario": "mock APIs and fixed native helper; visible main; overlay hidden; network image requests blocked identically; Windows process CPU and working set sampled once/second",
+  "rows": [
+    {
+      "stage": "idle",
+      "seconds": 8,
+      "clientCalls": 1,
+      "liveCalls": 0,
+      "ipc": 5,
+      "ipcBytes": 7060,
+      "cpuPercentMean": 0.6556374834175476,
+      "workingSetPeakMiB": 684.6015625
+    },
+    {
+      "stage": "select",
+      "seconds": 8,
+      "clientCalls": 4,
+      "liveCalls": 0,
+      "ipc": 1,
+      "ipcBytes": 164,
+      "cpuPercentMean": 0.8310019221654105,
+      "workingSetPeakMiB": 724.0390625
+    },
+    {
+      "stage": "live",
+      "seconds": 8,
+      "clientCalls": 5,
+      "liveCalls": 0,
+      "ipc": 1,
+      "ipcBytes": 102,
+      "cpuPercentMean": 1.2378194504361664,
+      "workingSetPeakMiB": 735.48828125
+    },
+    {
+      "stage": "disconnect",
+      "seconds": 8,
+      "clientCalls": 4,
+      "liveCalls": 0,
+      "ipc": 0,
+      "ipcBytes": 0,
+      "cpuPercentMean": 1.0839039307311635,
+      "workingSetPeakMiB": 738.54296875
+    }
+  ]
+}

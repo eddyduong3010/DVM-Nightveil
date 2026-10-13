@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "version": "2026.10.13.1",
+  "patches": ["16.20"],
+  "verifiedAt": "2026-10-13",
+  "description": "Quy tắc gợi ý cục bộ; không phải mô phỏng sát thương hoặc thống kê tỷ lệ thắng.",
+  "exclusiveItemGroups": [["3036","3033","6694"],["3135","3137","4646"],["3053","3156","6673"]],
+  "antihealComponents": ["3123","3916","3076"],
+  "cassiopeiaBoots": {"allowedFromDataPatch":"16.1","source":"https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-1-notes/"},
+  "sources": ["https://www.leagueoflegends.com/en-us/news/game-updates/patch-26-1-notes/","https://ddragon.leagueoflegends.com/cdn/16.20.1/data/en_US/item.json"],
+  "notes": "Chỉ đánh giá lõi khi có quy tắc phù hợp hoặc tier nguồn. Patch chưa xác minh phải được hiển thị rõ; không suy tier từ tỷ lệ chọn."
+}

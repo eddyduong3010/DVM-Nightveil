@@ -1,0 +1,86 @@
+DVM NIGHTVEIL 0.5.0 — RECOMMENDATION ENGINE
+
+Data flow
+Champion -> Ability -> Augment -> AugmentCombo -> Item
+UserPreference -> BuildArchetype -> Item
+Inventory, enemies, confirmed enemy augments, team coverage and patch constrain every path.
+
+Implementation
+core/synergy-graph.cjs: typed nodes/edges, active condition checks, local combo effects,
+item features, conditional archetypes and bounded heuristic scoring.
+data/ability-profiles.json: 24 champion profiles with Q/W/E/R/passive names and descriptions
+fetched from versioned Riot Data Dragon. Tags are DVM interpretations, not Riot proc rules.
+scripts/research-abilities.cjs: reproducible refresh. Updating tags/patch requires review;
+running a data download alone is not proof that each game interaction still works.
+core/engine.cjs: existing tactical/inventory logic plus graph contributions, score trace,
+source provenance and soft/hard conflicts. Keeps cheap antiheal priority and locked targets.
+core/build-options.cjs: generates eligible plans, keeps compatibility with auto/augment.
+desktop/main.cjs: cache key includes champion, player inventories, enemy knowledge, owned
+augments, target, role, preference, patch/version, community release and history state.
+src/BuildPlans.jsx: explanations and alternatives at the point of decision.
+
+Scoring
+Candidate generation: existing champion role/reference paths + archetype candidate pool.
+Reject unavailable/map-invalid/owned or recipe-family-exclusive items before ranking.
+Graph: +7 per modeled augment/item relationship, +9 modeled combo; archetype preference
++17 to +20; mana waste -18. Graph contribution is clamped to [-25,35]. These are tuning
+weights, not measured DPS, win probability or empirical confidence intervals.
+Legacy score covers immediate enemy needs, team antiheal/shred coverage and item timing.
+Preference and invested components add bounded adjustments. A valid user-locked target
+gets priority 1000, explicitly shown as a constraint. Personal history only breaks near ties.
+A tactical wound component already leading before new bonuses remains ahead of preferences.
+Every item explanation reports base + graph + preference + contextual/constraint residual.
+Individual edge weights describe raw rules; clamping/priority caps appear in the residual.
+Build paths are future purchase candidates, not a guaranteed optimal final six-item set.
+Different archetypes may share an urgent first purchase; subsequent priorities may differ.
+
+Conflict types
+Hard: invalid or removed item, map restrictions, owned upgrade, exclusive recipe family.
+Soft: augment has no identified enabling ability, unsupported augment, mana waste,
+physical item locked in magic direction, community trap/bug labels, old patch.
+Soft conflicts are explained; they do not silently erase a user's valid locked target.
+Warnings for missing mechanics lower confidence rather than inventing synergy.
+
+Coverage and confidence
+24 detailed champion profiles, 13 explicit augment relationship rules and one modeled
+cross-augment combo (Witchful Thinking + Marksmage). Existing local engine covers additional
+role-level rules; unmodeled graph interactions remain warnings, not inferred facts.
+Other champions use coarse role profiles with Low confidence.
+Medium is used only for current-patch detailed profiles without graph warnings.
+Experimental, unknown interactions and unreviewed patches use Low confidence.
+No High label or percentage confidence is fabricated. This is not a combat simulator.
+
+Patch behavior
+Versioned champion ability snapshot and mechanics patch must both match the current catalog.
+Mismatch disables graph augment/combo/archetype score bonuses, removes old augment bonuses
+from the legacy build scoring stage, rejects old statistical/reference paths, reports Low
+confidence, and leaves conservative catalog-valid candidates. Removed items are never revived.
+Generic role/rule fallback is still approximate and may need manual review on a new patch.
+Catalog patch/version and community release changes invalidate the desktop build cache.
+
+Sources checked 2026-10-13
+Riot Data Dragon: https://developer.riotgames.com/docs/lol#data-dragon
+Versioned profiles: source URL stored per champion in data/ability-profiles.json.
+Reusable statistics: https://arammayhem.com/data/ (CC BY 4.0; Data: arammayhem.com).
+Only same-patch allowlisted pickRate, date and source are passed to recommendations.
+Pick rate is observational context and contributes ZERO score. No win-rate field is copied,
+no augment win rate is inferred from popularity, personal history or a tier.
+Community combo tags are editorial observations; trap/bug labels generate warnings, not buffs.
+Existing OP.GG reference paths remain optional and labeled as popularity, not proof of optimality.
+No claim that a source is available for every champion or covers the Vietnam server exactly.
+
+Validation
+127 passing unit tests total; 41 new graph/decision tests including 24 champion cases.
+Additional cases cover add/remove reversibility, item lock/unlock, unmet ability condition,
+exclusive items, unknown augment, patch drift/rollback, removed item, unlicensed/stale source,
+forbidden field filtering, pick-rate independence and complete graph endpoint references.
+Electron smoke tests exercise add/remove, item locks, preferences and renderer explanations.
+Actual packaged EXE is tested with an isolated user profile; no game input is injected.
+Not yet validated: live-game DPS, outcomes, every augment interaction or an optimal build proof.
+
+Reproduce
+npm test
+npm run build
+node_modules/.bin/electron.cmd test/desktop-smoke.cjs
+npm run package
+node test/packaged-smoke.cjs

@@ -1,0 +1,57 @@
+DVM Nightveil 0.6.0 — Windows 11 x64
+Copyright DVM (Dương Văn Minh). Design by DVM in VietNam.
+
+CÀI ĐẶT
+Thoát bản cũ từ khay hệ thống trước khi chạy bản mới, ưu tiên lúc đã kết thúc trận.
+Bộ cài: mở DVM-Nightveil-Setup-0.6.0.exe.
+Portable: giải nén toàn bộ ZIP rồi mở DVM Nightveil.exe trong thư mục đã giải nén.
+Chọn một trong hai cách; không chạy hai bản đồng thời.
+Cấu hình và lịch sử tiếp tục dùng hồ sơ %APPDATA%\mayhem-companion.
+Thiết lập cho phép chọn màn hình, độ phân giải, chế độ cửa sổ và overlay.
+
+PHÍM TẮT
+Ctrl + Shift + O: ẩn/hiện overlay.
+Ctrl + Shift + Space: đổi Mini / Compact / Expanded.
+Ctrl + Shift + I: đổi click-through.
+Ctrl + Shift + C: mở bảng chính.
+F8 hoặc Ctrl + Shift + A: đọc các thẻ lõi đang hiển thị.
+Không dùng F9 vì trùng phím của trò chơi.
+
+THAY ĐỔI RUNTIME
+core/runtime-state.cjs quản lý trạng thái kết nối, chọn tướng, tải trận, trong trận,
+kết nối lại, hậu trận, tạm dừng và demo. Sự kiện đổi trạng thái đánh thức scheduler;
+API vẫn được thăm dò có giới hạn vì không có sự kiện đầy đủ từ Live Client Data.
+Polling không chồng lấn, giảm tần suất khi rảnh/ngoài game, tăng khi tải trận.
+Timeout, retry có backoff, hủy request khi đóng/tạm dừng; bỏ response cũ.
+Cache danh mục theo patch; cập nhật lỗi giữ lại dữ liệu tốt đã có.
+Chỉ gửi các trường UI thay đổi. Cache recommendation theo dữ liệu đầu vào.
+Debounce thay đổi màn hình; lưu cấu hình atomic. OCR được giải phóng khi rảnh.
+
+XÁC MINH
+150 bài kiểm thử đạt, gồm 23 bài mới về runtime, reader, cache và main process.
+Đã chạy thử giao diện Electron; đã đọc API thật: KIWI, map 12, 10 người chơi.
+Chưa xác minh wizard cài đặt, trọn trận bằng EXE 0.6.0, đa màn hình vật lý,
+mixed DPI, rút cắm màn hình, game crash thật, mất mạng thật và sleep/resume thật.
+Các lỗi kết nối và chuyển trạng thái được kiểm thử bằng dữ liệu mô phỏng.
+Không đo FPS, GPU, VRAM hoặc OCR trong giao tranh.
+
+BENCHMARK
+Xem BENCHMARK.html cùng các JSON trong thư mục benchmark của gói phát hành.
+Đây là một cặp đo 32 giây với API/helper giả lập và ảnh mạng bị chặn ở cả hai bản.
+Baseline dùng ASAR 0.5.0, bản mới dùng source + dist 0.6.0: không coi số CPU/RAM
+hoặc thời gian mở app là kết luận thống kê cho mọi máy hoặc trận thật.
+
+GIỚI HẠN DỮ LIỆU
+Tối ưu runtime không tạo ra dữ liệu lõi đối thủ bị ẩn. Không suy lõi từ trang bị.
+API không cung cấp hoặc ảnh không hiển thị thì giữ trạng thái chưa biết.
+Không injection, ghi bộ nhớ game, tự di chuyển chuột hay vượt cơ chế bảo vệ.
+
+PHÁT TRIỂN
+npm ci
+npm test
+npm run build
+npm start
+npm run package
+Kiểm thử Electron: node_modules\.bin\electron.cmd test\desktop-smoke.cjs
+Benchmark: node_modules\.bin\electron.cmd test\runtime-benchmark.cjs
+Chạy kiểm thử UI ngoài trận vì bài smoke có mở cửa sổ và overlay demo.

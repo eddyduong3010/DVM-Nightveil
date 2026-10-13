@@ -1,0 +1,8 @@
+const fs=require('node:fs'),path=require('node:path');
+const data=require('../data/catalog.json'),brand=require('../data/brand.json'),e=require('../core/engine.cjs');
+const {demo}=require('../core/demo.cjs'),{buildOptions}=require('../core/build-options.cjs'),{planCombos}=require('../core/combo-planner.cjs');
+const s=demo(data,'Evelynn'),owned=['ARAM_WitchfulThinking'],offered=['ARAM_ThreadtheNeedle','ARAM_Marksmage','ARAM_Deft'];
+const options=buildOptions(s,data,'Evelynn',owned,'auto',{},null,{focus:'auto'});
+let community=null;try{community=require('../data/community.json');}catch{}
+const settings={autoScan:true,overlayEnabled:true,role:'auto',buildFocus:'auto',manualChampion:'',planner:{champion:'Evelynn',ids:[]},regions:[{x:.18,y:.26,w:.2,h:.44},{x:.4,y:.26,w:.2,h:.44},{x:.62,y:.26,w:.2,h:.44}]};
+fs.writeFileSync(path.join(__dirname,'../src/preview.json'),JSON.stringify({brand,appVersion:require('../package.json').version,mode:'demo',status:'Dữ liệu minh họa',message:'Minh họa Evelynn. Kết nối game và phím tắt chạy trong ứng dụng Windows.',settings,client:{phase:'InProgress',queueId:2400},champion:data.champions.Evelynn,catalog:{...data,items:undefined},gameTime:620,gameMode:'ARAM Hỗn Loạn',lastLive:Date.now(),stale:false,owned,offered,scan:{status:'Đọc được 3/3 thẻ · dữ liệu minh họa',matches:[],enemyCandidates:[]},assessment:e.augmentAdvice(data,'Evelynn',owned,offered),build:options.selected,buildPlans:options.plans,planner:planCombos(data,community,settings.planner),threats:e.threats(s,data),selfItems:s.allPlayers[0].items.map(i=>({id:i.itemID,...data.items[i.itemID]})),itemDetails:Object.fromEntries(s.allPlayers.flatMap(p=>p.items.map(i=>[i.itemID,{name:data.items[i.itemID]?.name,icon:data.items[i.itemID]?.icon}])))}));

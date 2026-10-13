@@ -1,0 +1,11 @@
+DVM Nightveil — ARAM Mayhem Companion
+Design by DVM in VietNam
+Copyright © 2026 DVM (Dương Văn Minh). All rights reserved.
+
+Phần mềm được cá nhân hóa cho Dương Văn Minh. Biểu tượng Nightveil và giao diện nhận diện DVM được thiết kế riêng cho ứng dụng.
+
+League of Legends, Evelynn và các hình ảnh/dữ liệu trò chơi thuộc Riot Games. DVM Nightveil không được Riot Games bảo trợ hay xác nhận.
+
+Các thành phần mã nguồn mở giữ giấy phép riêng của tác giả tương ứng. Dữ liệu combo cộng đồng: Data: arammayhem.com, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Tier và hướng trang bị tham khảo được ghi nguồn riêng trong ứng dụng.
+
+Ứng dụng lưu thiết lập, lịch sử và bản sao lưu trên máy của người dùng. Gợi ý theo dữ liệu và quy tắc có giới hạn; người chơi quyết định thao tác trong trận.

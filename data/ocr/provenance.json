@@ -1,0 +1,16 @@
+{
+  "source": "https://tessdata.projectnaptha.com/4.0.0/",
+  "upstream": "https://github.com/tesseract-ocr/tessdata",
+  "license": "Apache-2.0",
+  "note": "Digests identify existing bundled models; not an upstream signature proof.",
+  "files": [
+    {
+      "path": "data/ocr/eng.traineddata",
+      "sha256": "daa0c97d651c19fba3b25e81317cd697e9908c8208090c94c3905381c23fc047"
+    },
+    {
+      "path": "data/ocr/vie.traineddata",
+      "sha256": "164d9bed7e5a6444586d39434cc1adf4df976cfe23cffd6468e444c94703640a"
+    }
+  ]
+}

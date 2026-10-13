@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "startupMs": 450,
+  "pages": 14,
+  "sizes": [
+    {
+      "width": 860,
+      "height": 620,
+      "zoom": 1,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "zoom": 1,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "zoom": 1,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1280,
+      "height": 900,
+      "zoom": 1.5,
+      "horizontalOverflow": false
+    }
+  ],
+  "liveCalls": 0,
+  "errors": [],
+  "scope": "Real Electron, isolated profile, mocked client/network/helper. Zoom is not physical DPI."
+}

@@ -1,0 +1,59 @@
+DVM Nightveil 0.7.0 — Windows x64
+
+npm ci
+node node_modules/electron/install.js   (only if Electron binary is missing)
+npm run data                          (validated catalog + local OCR languages)
+node scripts/preview.cjs               (refresh browser-only Evelynn preview)
+npm test                              (183 logic, storage, data, release and regression tests)
+npm run build
+npm start
+npm run package                       (tests, icon generation, Vite, NSIS + folder)
+
+Desktop integration test with an isolated profile:
+node_modules\.bin\electron.cmd test\desktop-smoke.cjs
+Results/screenshots: ../../outputs/validation-0.7.0
+This invokes application DOM controls. It does not prove physical hotkeys or OCR inside a real game.
+
+Migration check against a copy, never the user's original:
+node test/profile-migration.cjs <legacy-build-history.json>
+
+Architecture
+- desktop/main.cjs: lifecycle, bounded polling, shared build result/cache, overlays.
+- desktop/lcu.cjs: read-only loopback client + live data + post-match history.
+- desktop/ocr.cjs, desktop/hotkeys.ps1: local OCR and foreground input observation; no injected input.
+- desktop/catalog-store.cjs: validated snapshots and atomic active pointer; same-patch rollback.
+- desktop/json-cache.cjs: validated HTTPS ETag cache, immutable versioned Data Dragon.
+- core/data-validation.cjs: Zod source and catalog schemas. Disabled blank items are allowed; purchasable ARAM names are required. Non-KIWI rarities are checked after pool filtering.
+- desktop/history-store.cjs + storage-worker.cjs: SQLite WAL in a worker, transactional writes, legacy JSON migration, daily/manual backups, recovery.
+- desktop/opgg.cjs: patch-matched builds, exact S-E glyph tiers, champion icon mapping. Rank alone never becomes a tier.
+- desktop/community.cjs: same-release/same-patch data, stable source-ID mapping, correct community type labels.
+- core/engine.cjs: explicit rules; source tier and context score remain separate.
+- core/build-options.cjs: compare auto/damage/survival/augment preferences; keep locked target and prioritized wound component.
+- core/combo-planner.cjs: independent persistent draft, missing augment tracking, trap/bug warnings.
+- data/mechanics.json: versioned explicit exclusive groups/counter-component rules and support patch list. Sharing an epic component is not an exclusive-item rule.
+- core/match-history.cjs + desktop/match-history-sync.cjs: exact all-player IDs after game, bounded 20-match backfill, deletion markers, no inferred live augments.
+- core/reroll.cjs, auto-scan.cjs, card-monitor.cjs, card-choice.cjs: debounced rerolls, stale OCR cancellation and choice close handling.
+- core/display-layout.cjs + src/DisplaySetup.jsx: physical geometry/DIP conversion and display profiles.
+- public/nightveil.svg, scripts/render-icon.cjs: original vector mark, PNG and multi-size Windows ICO generation.
+
+Profile remains %APPDATA%\mayhem-companion across rebranding. appId stays local.mayhem.companion.
+Data updates run at startup and periodically out of game; activation is deferred during live games. Application updater is gated on a signed public feed; private preview remains manual.
+The rule pack is local/versioned, not an unverified remotely executable script.
+
+Limits
+Live Client Data inspected on the VN client has no all-player augment feed. LCU match-history details contain playerAugment1..6 after completion. Tab does not magically reveal hidden augments. Unknown stays unknown.
+Threat advice lacks enemy positions, live health and cooldowns. Builds are contextual heuristics, not full damage simulation.
+Community combo labels are editorial; no per-combo verified win rate is claimed.
+Screen geometry defaults require further live validation on ultrawide/HUD variants.
+Do not copy Arena values by dropping ARAM_ prefixes, turn popularity into strength, or let demo/draft data enter real history.
+
+Archive excludes node_modules, dist, private profiles and OCR language binaries. npm run data downloads OCR languages before packaging a fresh checkout.
+Brand/copyright and third-party attribution: LICENSE-DVM.txt.
+
+
+0.4.0 Desktop UX
+- Overlay layout/visibility extracted in core/overlay-layout.cjs. DIP geometry; preserve manual hide.
+- Native helper observes Tab edges; controls stay separate and clicks are excluded from game card detection.
+- New GameOverlay, OverlaySettings, AugmentLibrary; scoped density CSS and responsive navigation.
+- Capture: electron test/ux-capture.cjs --phase=after; isolated profile, renderer DPI simulation.
+- Test: npm test; electron test/desktop-smoke.cjs; node test/packaged-smoke.cjs.

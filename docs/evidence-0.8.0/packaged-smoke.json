@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "version": "0.8.0",
+  "isolatedProfile": true,
+  "legacyRows": 4,
+  "sqliteMigration": true,
+  "workerBackup": true,
+  "buildSaved": true,
+  "simulationWorker": true,
+  "staticOverlay": true,
+  "liveScanRejected": true,
+  "branding": true,
+  "network": "local-only setting",
+  "installerWizard": "NOT_TESTED"
+}

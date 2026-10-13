@@ -1,0 +1,85 @@
+{
+  "name": "mayhem-companion",
+  "version": "0.8.0",
+  "private": true,
+  "description": "DVM Nightveil â€” ARAM Mayhem Companion cá»§a DÆ°Æ¡ng VÄƒn Minh",
+  "author": "DÆ°Æ¡ng VÄƒn Minh",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "data": "node scripts/update-data.cjs",
+    "package": "electron-builder --win",
+    "icons": "electron scripts/render-icon.cjs",
+    "prestart": "node --check desktop/main.cjs",
+    "prepackage": "npm test && npm run typecheck && npm run notices && npm run icons && npm run build",
+    "release:prepare": "node scripts/release-config.cjs",
+    "release:verify": "powershell -NoProfile -ExecutionPolicy RemoteSigned -File scripts/verify-signatures.ps1",
+    "notices": "node scripts/licenses.cjs",
+    "typecheck": "tsc --project tsconfig.json",
+    "test:desktop": "electron test/advanced-desktop.cjs"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9",
+    "js-yaml": "5.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tesseract.js": "7.0.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.4"
+  },
+  "build": {
+    "appId": "local.mayhem.companion",
+    "productName": "DVM Nightveil",
+    "copyright": "Copyright Â© 2026 DVM (DÆ°Æ¡ng VÄƒn Minh). All rights reserved.",
+    "directories": {
+      "output": "artifacts"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "core/**/*",
+      "scripts/update-data.cjs",
+      "data/**/*",
+      "package.json",
+      "PRIVACY.md",
+      "THIRD-PARTY-NOTICES.txt",
+      "LICENSE-DVM.txt"
+    ],
+    "asarUnpack": [
+      "node_modules/**/*",
+      "data/ocr/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "dir"
+      ],
+      "icon": "assets/nightveil.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "shortcutName": "DVM Nightveil",
+      "artifactName": "DVM-Nightveil-Setup-${version}.${ext}",
+      "installerIcon": "assets/nightveil.ico",
+      "uninstallerIcon": "assets/nightveil.ico",
+      "license": "LICENSE-DVM.txt",
+      "allowElevation": false
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eddyduong3010/DVM-Nightveil.git"
+  },
+  "license": "UNLICENSED"
+}

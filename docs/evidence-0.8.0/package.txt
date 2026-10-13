@@ -1,0 +1,309 @@
+
+> mayhem-companion@0.8.0 prepackage
+> npm test && npm run typecheck && npm run notices && npm run icons && npm run build
+
+
+> mayhem-companion@0.8.0 test
+> node --test test/*.test.cjs
+
+✔ wound component is sufficient before a full item and recognizes teammate coverage (9.984ms)
+✔ Bramble is not suggested to proactively wound a distant healing mage (1.5414ms)
+✔ confirmed enemy healing augment affects advice; unknown augments do not (1.2311ms)
+✔ role conversion and actual investment steer build direction (0.4102ms)
+✔ a user target remains selected while alternatives and tactical purchases stay visible (0.833ms)
+✔ recipe credit handles duplicates and quotes intermediate upgrades at additional cost (0.1948ms)
+✔ component shopping uses combine cost and supports upgrading basic boots (0.872ms)
+✔ missing player identities never select the first anonymous player (0.4171ms)
+✔ teammate armor shred removes duplicate team-utility priority (15.4258ms)
+✔ community pick rates stay separate from tiers and mismatched patches are rejected (3.1247ms)
+✔ 01 physical 100 armor halves input (1.9734ms)
+✔ 02 negative resistance amplifies damage (0.2665ms)
+✔ 03 flat pen does not make positive resistance negative (0.1189ms)
+✔ 04 resistance reduction can produce negative resistance (0.0968ms)
+✔ 05 reduction precedes penetration (0.212ms)
+✔ 06 true damage ignores generic resistance/amp/reduction model (0.2973ms)
+✔ 07 crit expectation uses supplied multiplier (0.2939ms)
+✔ 08 proc ICD caps attack triggers (0.242ms)
+✔ 09 unique passives are not double counted (0.1789ms)
+✔ 10 false trigger condition skips effect (0.1816ms)
+✔ 11 unsupported effect explicitly omitted (0.249ms)
+✔ 12 shields do not produce negative damage (0.1229ms)
+✔ 13 haste reduces modeled cooldown but not proc ICD (0.114ms)
+✔ 14 reject NaN/Infinity/negative duration (0.2558ms)
+✔ 15 all output numbers finite (0.1813ms)
+✔ 16 deterministic simulation (0.6656ms)
+✔ 17 sensitivity worsens with higher positive resistance (0.1859ms)
+✔ 18 confidence without source is zero (0.8766ms)
+✔ 19 unknown patch confidence capped (0.1116ms)
+✔ 20 conflicting claims retained and downgraded (0.1708ms)
+✔ 21 diacritics insensitive VI search (0.1939ms)
+✔ 22 English champion search (16.3206ms)
+✔ 23 text diff not labeled buff (9.2304ms)
+✔ 24 deleted augment invalidates saved simulation (0.2929ms)
+✔ 25 item stat diff propagates to build (0.1744ms)
+✔ 26 20 archetypes have explicit tradeoffs (0.0774ms)
+✔ 27 locked banned contradiction rejected (0.8995ms)
+✔ 28 mutually exclusive penetration items detected (0.1863ms)
+✔ 29 duplicate item import rejected (0.1981ms)
+✔ 30 missing champion import rejected (0.0981ms)
+✔ 31 unknown augment rejected (0.1504ms)
+✔ 32 new patch disables editorial synergy (27.5502ms)
+✔ 33 training has 3 distinct seeded cards (0.2611ms)
+✔ 34 training rarity filter (0.137ms)
+✔ 35 preferences never mutate facts (0.1406ms)
+✔ 36 preference optout preserves order (0.0796ms)
+✔ 37 links reject file/js/http (0.2182ms)
+✔ 38 source freshness distinguishes unavailable and stale (0.1239ms)
+✔ 39 item recipe retains duplicate components (0.0657ms)
+✔ 40 item recipe cycle bounded (0.107ms)
+✔ 41 locked live commands blocked regardless of UI (0.7084ms)
+✔ 42 health and shields improve model EHP (0.1374ms)
+✔ 43 stacks bounded by declared maximum (0.1052ms)
+✔ 44 magic coefficient explicitly user supplied (0.1056ms)
+✔ 45 hit chance and targets scale modeled damage (0.0782ms)
+✔ 46 too many effects rejected (0.0907ms)
+✔ 47 SQLite migration preserves existing data and cascades versions (5.5269ms)
+✔ 48 future SQLite schema rejected (0.2046ms)
+✔ 49 worker roundtrip isolates computation (105.3432ms)
+✔ 50 five branches rejected (78.5214ms)
+✔ 51 source adapter rejects changed license (3.1511ms)
+✔ 52 source adapter rejects changed schema (0.173ms)
+✔ 53 source adapter rejects conflicting release snapshot (0.0946ms)
+✔ 54 source adapter accepts unknown source patch without inventing mapping (0.0775ms)
+✔ 55 local-only source sync does not fetch (0.2027ms)
+✔ 56 invalid effects object rejected (0.1011ms)
+✔ 58 exported HTML escapes user content (0.845ms)
+✔ 59 imported overlay rejects unsupported widgets and clamps opacity (0.5987ms)
+✔ 60 source row normalizer keeps mismatched patch rejected (0.1062ms)
+✔ 61 snapshot checksum rejects valid JSON modified after publication (598.5324ms)
+✔ 57 service persists workspace, build, simulation and patch invalidation (431.8033ms)
+✔ automatic scans follow the initial and 7, 11, 15 level gates (1.2855ms)
+✔ later gates wait until death, throttle retries, and keep trying until cards appear (0.2907ms)
+✔ tier labels align to OCR card centers above the cards on an offset display (2.711ms)
+✔ invalid game bounds do not place tier labels (0.1993ms)
+✔ history records strong players once per match and does not invent augments or wins (14.4435ms)
+✔ recording rejects demo, wrong mode, early game, unknown self and weak inventories (0.4177ms)
+✔ confirmed augments survive restart but an explicit correction removes them (1.7883ms)
+✔ history advice needs three independent past games of the same champion role and patch (11.5162ms)
+✔ atomic history storage survives queued saves and malformed input is rejected (459.8932ms)
+✔ a historical item bonus does not displace a currently prioritized wound component (46.3412ms)
+✔ all laptop/gaming presets keep the main window and overlays on the chosen display at 100/125/150/200 percent (2.2275ms)
+✔ detected game size overrides presets and capture keeps ultrawide aspect ratio (0.9829ms)
+✔ windowed captures exclude the title bar but client-only captures are not cropped twice (0.225ms)
+✔ card regions, click detection and badge centers agree on a 150-percent-scaled ultrawide display (0.4131ms)
+✔ invalid saved display configuration falls back safely and client size limits the main layout (0.2716ms)
+✔ catalog uses the KIWI pool and stable IDs (1.3278ms)
+✔ Vietnamese OCR matches names with removed accents (5.252ms)
+✔ empty or unrelated OCR never becomes an augment (7.7515ms)
+✔ similar candidates require a margin (0.2508ms)
+✔ unknown augments stay unrated (0.4919ms)
+✔ the Gragas cards shown in the game have local tiers while source data loads (2.7542ms)
+✔ partial offer reading does not give keep or reroll conclusion (1.3652ms)
+✔ healer augments are not ranked S on non-healers (0.1723ms)
+✔ ARAM excludes Guardian Angel and transformed Seraph; Cassiopeia can buy boots since 26.1 (0.1625ms)
+✔ correctly identifies player and all five opponents without ranking allies (1.2514ms)
+✔ dead players are not first engagement priorities (0.3486ms)
+✔ enemy augments are not invented and recorded evidence survives (2.0582ms)
+✔ no bought item is suggested again and exclusive penetration item is avoided (4.5687ms)
+✔ component credit accounts for owned components exactly once (14.2109ms)
+✔ every build candidate is purchasable on map 12 (6.088ms)
+✔ unknown or missing identities do not attribute another players state to self (0.1771ms)
+✔ AP Ashe is identified by actual investments and override remains available (0.6413ms)
+✔ planned build does not contain two pairs of boots or exclusive penetration items (0.6946ms)
+✔ confirmed augment can change the next item and states the reason (1.4288ms)
+✔ two defensive completed items switch Gragas to tank direction (0.8159ms)
+✔ early build does not rush generic resistance solely from team damage mix (0.4336ms)
+✔ three observed Mayhem augments receive explicit Caitlyn estimates (0.1863ms)
+✔ full observed choices identify tied priority by name (0.9614ms)
+✔ enemy control lowers Glass Cannon for ranged Caitlyn and selects Dual Wield (1.2745ms)
+✔ Lux sees all three observed tiers and an explicit third-card recommendation (1.6505ms)
+✔ Lux long-range quest adds a core-specific item while preserving counter-item priority (2.4646ms)
+✔ OP.GG parser reads current-patch Mayhem item IDs and rejects a stale patch (1.9065ms)
+✔ source build follows purchased items and yields to a different chosen playstyle (6.3077ms)
+✔ card watcher ignores one transient change but detects a persistent reroll or closed screen (0.3198ms)
+✔ a click records the selected card only after the entire choice screen closes (0.3104ms)
+✔ OP.GG ordering alone must not fabricate tiers for unknown Gragas augments (3.8487ms)
+✔ real client response shape imports all ten owners, 30 exact ARAM augment IDs, items and outcomes (17.7346ms)
+✔ unknown or ambiguous numeric IDs stay unresolved, not guessed from Arena or icons (5.027ms)
+✔ missing augment fields keep sync pending rather than caching an incomplete match as finished (24.7593ms)
+✔ mode, patch, incomplete roster, unknown self and stale match are rejected (3.1631ms)
+✔ live observations merge by exact identity and preserve observed purchase milestones (7.8619ms)
+✔ deletion and clearing are respected by subsequent imports and survive persistence (20.4431ms)
+✔ automatic sync imports recent matches once, honors disable/demo, and retries missing details (14.8297ms)
+✔ ending a match triggers early sync, concurrent ticks and cancelled work do not double-write (0.5784ms)
+✔ a mismatched returned match ID cannot attach augments to a requested game (0.4037ms)
+✔ live sampling includes a strong ally and final low-performing builds are excluded from learning (3.3004ms)
+✔ catalog validation allows disabled placeholders, rejects blank purchasable ARAM items and mixed patches (191.4295ms)
+✔ invalid catalog never replaces the active snapshot; corrupt snapshot and same-patch rollback recover (635.8433ms)
+✔ ETag cache validates before publication and reuses immutable/304 data without downloading again (35.7167ms)
+✔ SQLite migration keeps exact augments, deletion markers and legacy JSON; backup restores a corrupt database (186.1723ms)
+✔ malformed legacy history stays intact and cannot be replaced by a later save (62.3202ms)
+✔ build focus keeps a prioritized cheap wound component and locked target; alternatives can change order (15.0718ms)
+✔ community combo matching uses source IDs and preserves warning tags without mislabeling pick rate as tier (1.8655ms)
+✔ real OP.GG tier glyphs include E and exact tiers survive list order changes (11.3999ms)
+✔ source tier stays exact while suitability score can change with enemies (87.8213ms)
+✔ overlay avoids reserved top/bottom HUD at all supported resolutions, DPI levels and negative monitor origins (11.4635ms)
+✔ expanded falls back to readable compact/mini rather than shrinking text on a short screen (0.254ms)
+✔ manual zoom and vertical offsets remain within safe bounds even at 200 percent DPI (0.6251ms)
+✔ Tab and choice auto-hide preserve manual visibility and return to the configured state (1.1072ms)
+✔ mode cycling and persisted settings reject malformed values (0.1976ms)
+✔ Evelynn: experimental, augments and invested items yield explained legal alternatives (111.8658ms)
+✔ Lux: experimental, augments and invested items yield explained legal alternatives (2.7631ms)
+✔ Brand: damage, augments and invested items yield explained legal alternatives (4.4363ms)
+✔ Soraka: sustain, augments and invested items yield explained legal alternatives (2.7743ms)
+✔ Jinx: sustain, augments and invested items yield explained legal alternatives (3.8895ms)
+✔ Vayne: antitank, augments and invested items yield explained legal alternatives (2.8019ms)
+✔ KogMaw: antitank, augments and invested items yield explained legal alternatives (2.8901ms)
+✔ Kayle: experimental, augments and invested items yield explained legal alternatives (13.1714ms)
+✔ Vladimir: sustain, augments and invested items yield explained legal alternatives (2.2456ms)
+✔ Aatrox: sustain, augments and invested items yield explained legal alternatives (1.5868ms)
+✔ Malphite: utility, augments and invested items yield explained legal alternatives (1.2507ms)
+✔ Leona: survival, augments and invested items yield explained legal alternatives (1.3566ms)
+✔ Sona: utility, augments and invested items yield explained legal alternatives (2.341ms)
+✔ Janna: sustain, augments and invested items yield explained legal alternatives (1.2643ms)
+✔ Katarina: experimental, augments and invested items yield explained legal alternatives (1.6675ms)
+✔ Zyra: damage, augments and invested items yield explained legal alternatives (1.6066ms)
+✔ Veigar: damage, augments and invested items yield explained legal alternatives (2.071ms)
+✔ Nasus: utility, augments and invested items yield explained legal alternatives (1.1252ms)
+✔ Singed: utility, augments and invested items yield explained legal alternatives (19.6652ms)
+✔ Cassiopeia: antitank, augments and invested items yield explained legal alternatives (4.6793ms)
+✔ Riven: experimental, augments and invested items yield explained legal alternatives (2.3975ms)
+✔ Yasuo: sustain, augments and invested items yield explained legal alternatives (2.1141ms)
+✔ Ashe: utility, augments and invested items yield explained legal alternatives (3.0917ms)
+✔ MasterYi: antitank, augments and invested items yield explained legal alternatives (9.2591ms)
+✔ add/remove augment combo recomputes item evidence without mutating inputs (28.4473ms)
+✔ lock survives every archetype and removing it restores actual preferences (2.3596ms)
+✔ conflicting locked magic penetration does not bypass exclusivity (1.5901ms)
+✔ unsupported healing augment on damage-only kit reports condition rather than inventing synergy (1.6201ms)
+✔ pets missing, stack missing, unknown augment are explicit low-coverage warnings (4.3067ms)
+✔ sustain is not offered as lifesteal to Lux and falls back from saved unsupported focus (1.2013ms)
+✔ patch change disables old graph synergies and old reference popularity; rollback restores them (17.9762ms)
+✔ licensed pick rate is displayed without score effect or forbidden field leakage (15.8308ms)
+✔ unlicensed source cannot affect recommendations or expose observations (4.0626ms)
+✔ new or removed item cannot remain a recommended item from old rules (29.3537ms)
+✔ two source statistics with different pick rates produce identical scores (3.9446ms)
+✔ antiheal remains tactical priority across six applicable modes against healing opponents (3.9792ms)
+✔ all graph edge endpoints resolve to typed nodes (58.1964ms)
+✔ manual mana target on Vladimir is honored with an explicit waste warning (1.1634ms)
+✔ utility candidate pool still respects allied armor shred instead of bypassing team context (4.0164ms)
+✔ recommendation source links open only explicitly supported HTTPS sources (1.1727ms)
+✔ patch drift removes old heuristic augment tiers but accepts explicitly current source tiers (19.0531ms)
+✔ updater requires pinned publisher in packaged feed (2.5497ms)
+✔ bounded reader accepts body at limit (26.5204ms)
+✔ bounded reader rejects chunked over-limit input (0.6864ms)
+✔ bounded reader cancels stream on overflow (1.093ms)
+✔ bounded reader rejects oversized content length (0.9281ms)
+✔ remote fetch rejects redirects at transport boundary (1.5053ms)
+✔ source boundary rejects http://op.gg/a (0.2162ms)
+✔ source boundary rejects https://op.gg.evil.test/a (0.1156ms)
+✔ source boundary rejects https://u:p@op.gg/a (0.1273ms)
+✔ source boundary rejects https://op.gg:444/a (0.1904ms)
+✔ source boundary rejects https://127.0.0.1/a (0.189ms)
+✔ legacy settings migrate without losing display or overlay preference (0.1938ms)
+✔ future settings schema fails closed (0.32ms)
+✔ migration preserves original settings backup (53.9221ms)
+✔ corrupt settings recover last known good (11.8018ms)
+✔ missing settings use defaults (3.8279ms)
+✔ future settings file remains unchanged (4.8039ms)
+✔ crash diagnostics discard names tokens stack and messages (8.1696ms)
+✔ three repeated unclean starts enable recovery mode (99.9308ms)
+✔ clean close resets recovery count (148.6536ms)
+✔ disabled updater never reaches network (0.6267ms)
+✔ active game blocks update checks and installation (0.2106ms)
+✔ update install waits for backup and rechecks game state (0.1458ms)
+✔ downloaded update can install outside match with backup (3.6819ms)
+✔ failed update backs off and preserves application (0.1844ms)
+✔ overlapping checks share bounded work (0.1419ms)
+✔ disconnect with game window visible cannot install (0.0888ms)
+✔ stale client InProgress cannot install (0.0557ms)
+✔ idle state permits installation (5.0842ms)
+✔ signed release rejects missing credentials (0.5005ms)
+✔ public update feed cannot be unsigned (0.1505ms)
+✔ private preview disables updater and signing claim (0.1296ms)
+✔ signed public build binds publisher and repository (0.1161ms)
+✔ main process discards OCR captured before a reroll and automatically replaces tiers from a fresh scan (180.408ms)
+✔ choosing a card cancels a queued reroll so it cannot repopulate the closed choice overlay (6.2994ms)
+✔ observed reroll buttons match the screenshot and stay separate from card selection on an ultrawide display (2.5123ms)
+✔ rapid rerolls debounce into one fresh request and old OCR cannot finish a newer reroll (0.3589ms)
+✔ rerolls retry incomplete OCR with a limit and stop when disabled or reset (0.2841ms)
+✔ real main polling ignores stale game data after postgame and starts a clean next match (177.6503ms)
+✔ game crash expires cached snapshot and reconnect preserves owned augments for the same match (1.5984ms)
+✔ late API response from an invalidated epoch cannot populate state (5.3742ms)
+✔ overlapping poll triggers do not create overlapping API reads (3.0238ms)
+✔ event-driven lifecycle: client, select, loading, live, postgame, client (1.7733ms)
+✔ idle minute has bounded probes and no retry storm (0.5098ms)
+✔ foreground vs background match cadence (0.2599ms)
+✔ crash/missing live API enters reconnect and uses bounded exponential backoff (0.1459ms)
+✔ client API failure does not discard a healthy live session (0.1316ms)
+✔ suspend blocks API probes and resume immediately rediscovers (0.1748ms)
+✔ demo blocks real API and can return to reconnect (0.1366ms)
+✔ stop disarms pending scheduling (0.1243ms)
+✔ delta publisher suppresses duplicates and reconstructs the exact state (0.3519ms)
+✔ new renderer gets full state and removed keys are cleared (0.292ms)
+✔ malformed or empty live snapshots never become live game data (0.4001ms)
+✔ LCU caches session for same phase and refreshes at a phase transition (0.7406ms)
+✔ auth loss invalidates credentials, session and client version (0.2735ms)
+✔ transient API timeouts invalidate credentials after three failures (0.2608ms)
+✔ shutdown aborts live API work and frees request registry (0.5841ms)
+✔ discovery calls are deduplicated while a discovery is in flight (0.1609ms)
+✔ same phase cached session preserves game ID and queue (0.2872ms)
+✔ patch-indexed catalog keeps another patch through repeated same-patch updates (606.3022ms)
+✔ client InProgress cannot repeatedly reset live failure backoff or trigger immediate duplicate reads (0.342ms)
+✔ Electron entry point and local client reader parse before packaging (2650.5695ms)
+ℹ tests 244
+ℹ suites 0
+ℹ pass 244
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3833.9765
+
+> mayhem-companion@0.8.0 typecheck
+> tsc --project tsconfig.json
+
+
+> mayhem-companion@0.8.0 notices
+> node scripts/licenses.cjs
+
+Runtime components: 34
+
+> mayhem-companion@0.8.0 icons
+> electron scripts/render-icon.cjs
+
+
+DVM Nightveil icons rendered at 16–256 px
+
+> mayhem-companion@0.8.0 build
+> vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 25 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.69 kB │ gzip:  0.43 kB
+dist/assets/index-B66__SuH.css   48.89 kB │ gzip: 11.05 kB
+dist/assets/index-7HlX_R1E.js   274.85 kB │ gzip: 85.13 kB
+
+✓ built in 219ms
+
+> mayhem-companion@0.8.0 package
+> electron-builder --win --config release-config.json --publish never
+
+  • electron-builder  version=26.15.3 os=10.0.26300
+  • loaded configuration  file=C:\Users\minhd\Documents\Codex\2026-10-12\to\work\release-repository\release-config.json
+  • executing @electron/rebuild  electronVersion=44.7.0 arch=x64 buildFromSource=false workspaceRoot=C:\Users\minhd\Documents\Codex\2026-10-12\to\work\release-repository projectDir=./ appDir=./
+  • installing native dependencies  arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=44.7.0 appOutDir=artifacts\win-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=C:\Users\minhd\Documents\Codex\2026-10-12\to\work\release-repository\artifacts\win-unpacked
+  • searching for node modules  pm=npm searchDir=C:\Users\minhd\Documents\Codex\2026-10-12\to\work\release-repository
+  • updating asar integrity executable resource  executablePath=artifacts\win-unpacked\DVM Nightveil.exe
+  • signing with signtool.exe  path=artifacts\win-unpacked\DVM Nightveil.exe
+  • building        target=nsis file=artifacts\DVM-Nightveil-Setup-0.8.0.exe archs=x64 oneClick=false perMachine=false
+  • signing with signtool.exe  path=artifacts\win-unpacked\resources\elevate.exe
+  • signing with signtool.exe  path=artifacts\DVM-Nightveil-Setup-0.8.0.__uninstaller.exe
+  • signing with signtool.exe  path=artifacts\DVM-Nightveil-Setup-0.8.0.exe
+  • building block map  blockMapFile=artifacts\DVM-Nightveil-Setup-0.8.0.exe.blockmap

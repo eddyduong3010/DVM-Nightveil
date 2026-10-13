@@ -1,0 +1,25 @@
+{
+  "node": "v26.4.0",
+  "platform": "win32",
+  "cpus": "Intel(R) Core(TM) i7-9700K CPU @ 3.60GHz",
+  "notes": "Local synthetic scenario; roundtrip includes worker messaging, excludes UI debounce; no game measurement.",
+  "searchRebuildEachRequestMs": {
+    "samples": 150,
+    "p50": 11.876400000000103,
+    "p95": 13.50989999999996,
+    "max": 17.2984
+  },
+  "searchWorkerIndexedMs": {
+    "samples": 150,
+    "p50": 0.7066999999999553,
+    "p95": 1.6193000000000666,
+    "max": 2.7738999999999123
+  },
+  "simulationFourBranchesMs": {
+    "samples": 150,
+    "p50": 0.22019999999997708,
+    "p95": 0.5699000000000751,
+    "max": 3.3162999999999556
+  },
+  "heapMiB": 30.25672149658203
+}
