@@ -29,7 +29,7 @@ async function connect(url){
   // Wait for boot's first client discovery and renderer subscription, not just
   // preload availability. Boot may still minimize a window while discovering.
   await until(async()=>{const s=await state();return s.status!=='Đang kết nối'&&s.hotkeyListener==='Sẵn sàng'&&await main.evaluate("!!document.querySelector('nav button')");});
-  let s=await state();assert.equal(s.appVersion,'0.8.0');assert.equal(s.brand.name,'DVM Nightveil');assert.equal(s.history.total,raw.records.length);assert.equal(s.history.error,'');
+  let s=await state();assert.equal(s.appVersion,require('../package.json').version);assert.equal(s.brand.name,'DVM Nightveil');assert.equal(s.history.total,raw.records.length);assert.equal(s.history.error,'');
   assert.ok((await fs.stat(path.join(profile,'history.sqlite'))).isFile());
   const adv=(action,input={})=>cmd('advanced',{action,input});
   const b={name:'Packaged Evelynn',champion:'Evelynn',items:['3089'],augments:['ARAM_WitchfulThinking'],archetype:'ap-burst',patch:catalog.patch};

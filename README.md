@@ -1,10 +1,10 @@
-# DVM Nightveil 0.8
+# DVM Nightveil 0.8.1
 
 Created by **Dương Văn Minh**. **Design by DVM in VietNam.**
 
 Bản Advanced Preview cho Windows 11: Build Lab 20 hướng chơi, tối đa 4 nhánh, mô phỏng theo giả định, thư viện SQLite có phiên bản, ảnh hưởng patch, tra cứu, luyện tập và tham khảo overlay tĩnh. Giữ cùng profile 0.7, backup trước migration schema3.
 
-**Chưa phải Pro Edition hoàn tất hoặc bản Riot phê duyệt.** Simulator chưa bao phủ mọi kỹ năng/nội tại/lõi; kết quả ghi APPROXIMATE. Không công bố win rate lõi. Live OCR/adaptive advice bị khóa theo master prompt mới. Installer preview chưa ký số; auto-update ký số chưa hoạt động.
+**Chưa phải Pro Edition hoàn tất hoặc bản Riot phê duyệt.** Ứng dụng tự đọc tướng và trang bị qua Game Client ở chế độ chỉ quan sát; build ghim trên overlay vẫn là tham khảo tĩnh. Simulator chưa bao phủ mọi kỹ năng/nội tại/lõi; kết quả ghi APPROXIMATE. Không công bố win rate lõi. Quét lõi trực tiếp, tier trên thẻ và lời khuyên quyết định trong trận vẫn tắt. Installer preview chưa ký số; auto-update ký số chưa hoạt động.
 
 ## Dùng thử
 

@@ -1,3 +1,9 @@
+# 0.8.1 — Read-only match view — 2026-10-14
+
+- Read locally available Game Client champion and item data while a match is active; show it in the main window and overlay without changing pinned build choices.
+- Keep live augment scanning, enemy augment inference, and adaptive in-match recommendations disabled; no invented augment tiers or hidden-match data.
+- Add regression tests for the read-only projection and keep preview updates disabled until a signed release is available.
+
 # 0.8.0 — Advanced Preview — 2026-10-14
 
 - Added offline Build Lab, 20 archetypes, four branches, explicit assumption simulator in a worker.

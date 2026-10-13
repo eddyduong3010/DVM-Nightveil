@@ -3,6 +3,7 @@ const fs=require('node:fs/promises');
 const path=require('node:path');
 const {spawn}=require('node:child_process');
 const {POLICY,assertCommand}=require('../core/feature-policy.cjs');
+const {visibleSession}=require('../core/visible-session.cjs');
 const {AdvancedService}=require('./advanced-service.cjs');
 let advanced;
 const {LeagueReader}=require('./lcu.cjs');
@@ -121,7 +122,7 @@ function rosterChampions(){
  return [...new Set(ids.filter(id=>data.champions[id]))];
 }
 function getState({overlayOnly=false}={}){
- if(POLICY.liveAdvice!=='APPROVED')return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Tham khảo tĩnh · không quét trận'},staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
+ if(POLICY.liveAdvice!=='APPROVED')return {policy:POLICY,appVersion,brand,settings,overlayUX,diagnostic,mode,status,message,updating,applicationUpdate:applicationUpdates?.state,display:overlayOnly?null:displayState(),catalog:overlayOnly?null:{patch:data.patch,version:data.version},client:client?{phase:client.phase,version:client.version}:null,runtime:{state:runtime.state},history:overlayOnly?null:historyView({items:[],examples:[],augments:[]}),historyItemNames:{},owned:[],threats:[],offered:[],scan:{status:'Chỉ đọc dữ liệu đã hiển thị · không quét lõi'},visibleSession:POLICY.visibleSession==='READ_ONLY'?visibleSession(snapshot,data):null,lastLive,stale:!!lastLive&&Date.now()-lastLive>4500,staticReference:settings.staticReference||null,hotkeyListener,hotkeyFailures,dataHealth:{patch:data.patch,updatedAt:data.fetchedAt,snapshots:dataSnapshots}};
  const champ=currentChampion(), blank={activePlayer:{},allPlayers:[],gameData:{mapNumber:12}};
  const enemyThreats=snapshot?engine.threats(snapshot,data,enemyAugments):[];
  const historyRole=engine.inferRole(champ,data,snapshot,settings.role,owned);
@@ -269,15 +270,15 @@ function maybeRefreshRosterAugments(){
  }
 }
 runtime.on('transition',()=>{if(reader&&!polling)schedulePoll();});
-function schedulePoll(){clearTimeout(pollTimer);const delay=POLICY.liveAdvice==='APPROVED'?runtime.delay():['SUSPENDED','DEMO','STOPPED'].includes(runtime.state)?null:Math.max(250,runtime.nextClient-Date.now());if(delay!==null&&!app.isQuitting)pollTimer=setTimeout(poll,delay);}
+function schedulePoll(){clearTimeout(pollTimer);const delay=POLICY.visibleSession==='READ_ONLY'||POLICY.liveAdvice==='APPROVED'?runtime.delay():['SUSPENDED','DEMO','STOPPED'].includes(runtime.state)?null:Math.max(250,runtime.nextClient-Date.now());if(delay!==null&&!app.isQuitting)pollTimer=setTimeout(poll,delay);}
 async function poll(){
  if(polling||mode==='demo'||app.isQuitting||runtime.state==='SUSPENDED')return;polling=true;
  const pollEpoch=epoch;
  try{
    if(runtime.due('client')){const c=await reader.readClient();if(mode!=='live'||pollEpoch!==epoch)return;client=c?{...c,checkedAt:Date.now()}:null;runtime.dispatch('CLIENT',c);const wanted=c?.version?.match(/^\d+\.\d+/)?.[0];if(wanted&&wanted!==data.patch){const cached=await catalogStore?.forPatch(wanted);if(mode!=='live'||pollEpoch!==epoch)return;if(cached)activateCatalog(cached);}}
    if(pendingCatalog&&!['InProgress','GameStart','Reconnect'].includes(client?.phase)){activateCatalog(pendingCatalog);pendingCatalog=null;}
-   status=client?'Đã kết nối client · tham khảo tĩnh':'Ngoại tuyến · cache sẵn sàng';
-   const readLive=POLICY.liveAdvice==='APPROVED'&&runtime.due('live');
+    status=client?'Đã kết nối client · quan sát thụ động':'Ngoại tuyến · cache sẵn sàng';
+    const readLive=(POLICY.visibleSession==='READ_ONLY'||POLICY.liveAdvice==='APPROVED')&&runtime.due('live');
    const live=readLive?await reader.readLive().catch(()=>null):null;
    if(mode!=='live'||pollEpoch!==epoch)return;
    if(validLive(live)&&!['POSTGAME','CLIENT','CHAMP_SELECT'].includes(runtime.state)){
@@ -285,7 +286,7 @@ async function poll(){
       const id=client?.gameId;const t=live.gameData?.gameTime||0;
       if((matchId&&id&&matchId!==id)||(lastGameTime>=0&&t+15<lastGameTime))resetMatch();
       if(id)matchId=id;lastGameTime=t;snapshot=live;lastLive=Date.now();status='Đang đọc trận';
-      observeBuilds();
+       if(POLICY.visibleSession==='READ_ONLY')observeBuilds();
       if(targetItem&&engine.consumed(targetItem,new Set((engine.findSelf(live)?.items||[]).map(i=>String(i.itemID))),data))targetItem='';
    }else if(readLive||runtime.state==='POSTGAME'){
       runtime.dispatch('LIVE_FAIL');

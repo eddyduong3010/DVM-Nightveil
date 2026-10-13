@@ -7,8 +7,8 @@
 
 Riot hạn chế công cụ kết luận thay người chơi trong trận, dữ liệu bị che giấu và tự thao tác; trang LoL cấm hiển thị win rate của Augments/Arena items. Phạm vi sản phẩm hiện: pregame planning, offline simulation, postgame review, static reference. Không tự xác nhận Riot đã chấp thuận sản phẩm.
 
-core/feature-policy.cjs khóa LIVE_ADVICE/LIVE_OCR ở DISABLED_UNTIL_APPROVED, không có tùy chọn UI bật lại. Main guards command/hotkeys/scan scheduling/card click/tab inspection; không readLive trong runtime advanced. IPC overlay không gọi AdvancedService. Bản test legacy chỉ thay policy trong VM fixture, không có đường override production.
+core/feature-policy.cjs khóa LIVE_ADVICE/LIVE_OCR ở DISABLED_UNTIL_APPROVED, không có tùy chọn UI bật lại. Main guards command/hotkeys/scan scheduling/card click/tab inspection. Chế độ READ_ONLY đọc Game Client trên máy và chỉ đưa tướng/trang bị vốn có thể xem trong game ra bảng/overlay; không suy diễn lõi, sức mạnh hoặc chỉ dẫn chọn. IPC overlay không gọi AdvancedService. Bản test legacy chỉ thay policy trong VM fixture, không có đường override production.
 
-No injection, no kernel driver, no memory reading, no Vanguard bypass, no buying/clicking/mouse automation. Overlay mới chỉ bản tham khảo được ghim ngoài trận, không thay theo enemy/items/live snapshot. Lõi đối thủ chưa có nguồn thì không bịa; hậu trận dùng reader đã có khi được cung cấp.
+No injection, no kernel driver, no memory reading, no Vanguard bypass, no buying/clicking/mouse automation. Overlay hiển thị bản tham khảo được ghim ngoài trận cùng danh sách trang bị quan sát được; không thay build ghim theo đối thủ. Lõi đối thủ chưa có nguồn thì không bịa; hậu trận dùng reader đã có khi được cung cấp.
 
 Còn cần đăng ký/review Riot cho phạm vi phân phối, làm rõ quyền tài sản/dữ liệu và ghi nhận chấp thuận bằng văn bản trước stable. OCR live và adaptive live không được bật trong release này.
