@@ -1,0 +1,63 @@
+name: Signed Windows release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing version tag, for example v0.7.0'
+        required: true
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: windows-latest
+    environment: release
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Verify tag and feed visibility
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          PUBLIC_UPDATE_FEED: ${{ vars.PUBLIC_UPDATE_FEED }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:RELEASE_TAG -ne ('v' + (Get-Content package.json | ConvertFrom-Json).version)) { throw 'Tag/version mismatch' }
+          if ($env:PUBLIC_UPDATE_FEED -eq 'true') {
+            $private = gh api "repos/$env:GITHUB_REPOSITORY" --jq .private
+            if ($LASTEXITCODE -ne 0 -or $private -ne 'false') { throw 'Public update feed must be readable without credentials' }
+          }
+      - run: npm ci
+      - run: node node_modules/electron/install.js --no
+      - run: npm audit --omit=dev --audit-level=moderate
+      - run: npm run notices
+      - name: Configure signed release
+        run: npm run release:prepare
+        env:
+          RELEASE_SIGNED: 'true'
+          PUBLIC_UPDATE_FEED: ${{ vars.PUBLIC_UPDATE_FEED }}
+          WINDOWS_PUBLISHER: ${{ vars.WINDOWS_PUBLISHER }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      - name: Test and build signed artifacts
+        run: npm run package -- --config release-config.json --publish never
+        env:
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      - run: npm run release:verify
+      - name: Create checksums and draft
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          Get-ChildItem artifacts -File | Where-Object Extension -in '.exe','.yml','.blockmap' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)" } | Set-Content artifacts/SHA256.txt
+          $files = @(Get-ChildItem artifacts -File | Where-Object Extension -in '.exe','.yml','.blockmap','.txt' | ForEach-Object FullName)
+          gh release create $env:RELEASE_TAG @files --verify-tag --draft --title "DVM Nightveil $env:RELEASE_TAG" --notes-file CHANGELOG.md
+          if ($LASTEXITCODE -ne 0) { throw 'Release publish failed' }
+
